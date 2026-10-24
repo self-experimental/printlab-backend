@@ -1,0 +1,28 @@
+[
+  {
+    "id": "cube-20",
+    "name": "Куб 20 мм",
+    "material": "PLA",
+    "geometry": {
+      "volumeMm3": 8000.0,
+      "surfaceAreaMm2": 2400.0,
+      "boundingBoxXmm": 20.0,
+      "boundingBoxYmm": 20.0,
+      "boundingBoxZmm": 20.0,
+      "triangleCount": 12
+    }
+  },
+  {
+    "id": "cube-30",
+    "name": "Куб 30 мм",
+    "material": "PLA",
+    "geometry": {
+      "volumeMm3": 27000.0,
+      "surfaceAreaMm2": 5400.0,
+      "boundingBoxXmm": 30.0,
+      "boundingBoxYmm": 30.0,
+      "boundingBoxZmm": 30.0,
+      "triangleCount": 12
+    }
+  }
+]
