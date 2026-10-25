@@ -26,8 +26,7 @@ public class ExperimentalOptimizationAlgorithm implements OptimizationAlgorithm 
         }
 
         if (candidates.isEmpty()) {
-            throw new OptimizationNotApplicableException(
-                    "Нет экспериментов, удовлетворяющих всем заданным ограничениям (нагрузка, время, материал, параметры печати).");
+            throw new OptimizationNotApplicableException(OptimizationError.NO_SUITABLE_CONFIGURATION);
         }
 
         ExperimentResult best = null;
@@ -88,7 +87,7 @@ public class ExperimentalOptimizationAlgorithm implements OptimizationAlgorithm 
     private double score(ExperimentResult e, OptimizationPriority priority) {
         switch (priority) {
             case MAX_STRENGTH:
-                return e.getCompressiveStrengthMpa();
+                return measuredStrength(e);
             case MIN_WEIGHT:
                 return -e.getMaterialConsumptionG();
             case MIN_TIME:
@@ -96,18 +95,23 @@ public class ExperimentalOptimizationAlgorithm implements OptimizationAlgorithm 
             case BALANCED:
             default:
                 double cost = Math.max(e.getMaterialConsumptionG(), 0.001) * Math.max(e.getPrintTimeMin(), 0.001);
-                return e.getCompressiveStrengthMpa() / Math.sqrt(cost);
+                return measuredStrength(e) / Math.sqrt(cost);
         }
     }
 
+    private double measuredStrength(ExperimentResult experiment) {
+        return experiment.getFailureLoadN() != null
+                ? experiment.getFailureLoadN() : experiment.getCompressiveStrengthMpa();
+    }
+
     private String buildExplanation(ExperimentResult best, OptimizationRequest req, Double capN) {
+        var number = java.text.NumberFormat.getNumberInstance(java.util.Locale.forLanguageTag("ru-RU"));
+        number.setMaximumFractionDigits(2);
         StringBuilder sb = new StringBuilder();
-        sb.append("Выбрана конфигурация ").append(best.getId())
-          .append(": заполнение ").append(best.getInfillPercent()).append("%")
-          .append(", прочность ").append(best.getCompressiveStrengthMpa()).append(" МПа");
+        sb.append("Выбрано заполнение ").append(number.format(best.getInfillPercent())).append("% из испытанных вариантов");
         if (capN != null) {
-            sb.append(", допустимая нагрузка ").append(String.format("%.2f Н", capN))
-              .append(" (коэф. запаса ").append(req.safetyFactor()).append(")");
+            sb.append(", нагрузка с учётом запаса ").append(number.format(capN)).append(" Н")
+              .append(" (коэффициент запаса ").append(number.format(req.safetyFactor())).append(")");
         }
         return sb.toString();
     }

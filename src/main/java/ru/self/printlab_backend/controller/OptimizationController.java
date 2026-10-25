@@ -28,7 +28,7 @@ public class OptimizationController {
     @PostMapping(value = "/analyze-stl", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public OptimizationResponse optimizeByStl(
             @RequestParam("file") MultipartFile file,
-            @Valid @ModelAttribute OptimizationRequest request) { // <-- Добавлен @ModelAttribute
+            @Valid @ModelAttribute OptimizationRequest request) {
         StlAnalysisResult analysis = stlAnalysisService.analyze(file);
         return optimizationService.optimize(analysis.matchedModel(), request);
     }

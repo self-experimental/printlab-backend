@@ -1,0 +1,864 @@
+{
+  "schemaVersion": 1,
+  "materials": [
+    {
+      "id": "prusament-pla",
+      "family": "PLA",
+      "name": "Prusament PLA",
+      "manufacturer": "Prusa Polymers",
+      "source": {
+        "title": "Prusament PLA — Technical datasheet",
+        "url": "https://prusament.com/wp-content/uploads/2022/10/PLA_Prusament_TDS_2021_10_EN.pdf",
+        "version": "1.1",
+        "publishedOn": "2022-02-16",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "sha256": "68c8298b9329a7b0e5f8d35cf4cb0172708184f7d4f95491643163e4f140b1b7"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 200,
+          "max": 220
+        },
+        "bedTemperatureC": {
+          "min": 40,
+          "max": 60
+        },
+        "maxPrintSpeedMmS": 200,
+        "coolingFanPercent": {
+          "min": 100,
+          "max": 100
+        },
+        "hardenedNozzleRequired": null
+      },
+      "densityGcm3": 1.24,
+      "densityMethod": "ISO 1183",
+      "hdtAt045MpaC": 55,
+      "hdtAt180MpaC": 55,
+      "testSeries": [
+        {
+          "id": "prusament-pla-printed",
+          "specimenType": "PRINTED",
+          "specimenDescription": "Стандартные образцы по методам испытаний из паспорта. Точные размеры отдельно не приведены.",
+          "conditions": {
+            "printer": "Original Prusa i3 MK3",
+            "slicer": "Slic3r Prusa Edition 1.40.0",
+            "layerHeightMm": 0.2,
+            "perimeters": 2,
+            "infillPercent": 100,
+            "infillPattern": "rectilinear",
+            "topLayers": 0,
+            "bottomLayers": 0,
+            "infillPrintSpeedMmS": 200,
+            "nozzleTemperatureC": 215,
+            "bedTemperatureC": 60,
+            "nozzleDiameterMm": null,
+            "extrusionMultiplier": null,
+            "coolingFanPercent": null,
+            "notes": [
+              "Остальные настройки — по профилю производителя. Подготовка образцов и условия среды указаны не полностью."
+            ]
+          },
+          "measurements": [
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 51,
+              "uncertainty": 3,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 59,
+              "uncertainty": 2,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 2300,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 2400,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 83,
+              "uncertainty": 6,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 99,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "VERTICAL_XZ"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Свойства относятся к конкретному продукту и условиям испытаний; их нельзя считать допустимой нагрузкой произвольной детали."
+      ]
+    },
+    {
+      "id": "prusament-petg",
+      "family": "PETG",
+      "name": "Prusament PETG",
+      "manufacturer": "Prusa Polymers",
+      "source": {
+        "title": "Prusament PETG — Technical datasheet",
+        "url": "https://storage.googleapis.com/prusa3d-content-prod-14e8-wordpress-prusament-prod/2023/10/9f8d2165-tds_prusament-petg_n_en.pdf",
+        "version": "1.1",
+        "publishedOn": "2022-02-16",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "sha256": "040164092e1986ed6a7daea37367ddcdfedc55105f9b7a01a23a4dc7682f34e9"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 240,
+          "max": 260
+        },
+        "bedTemperatureC": {
+          "min": 70,
+          "max": 90
+        },
+        "maxPrintSpeedMmS": 200,
+        "coolingFanPercent": {
+          "min": 50,
+          "max": 50
+        },
+        "hardenedNozzleRequired": null
+      },
+      "densityGcm3": 1.27,
+      "densityMethod": "ISO 1183",
+      "hdtAt045MpaC": 68,
+      "hdtAt180MpaC": 68,
+      "testSeries": [
+        {
+          "id": "prusament-petg-printed",
+          "specimenType": "PRINTED",
+          "specimenDescription": "Стандартные образцы по методам испытаний из паспорта. Точные размеры отдельно не приведены.",
+          "conditions": {
+            "printer": "Original Prusa i3 MK3S",
+            "slicer": "Slic3r Prusa Edition 1.40.0",
+            "layerHeightMm": 0.2,
+            "perimeters": 2,
+            "infillPercent": 100,
+            "infillPattern": "rectilinear",
+            "topLayers": 0,
+            "bottomLayers": 0,
+            "infillPrintSpeedMmS": 200,
+            "nozzleTemperatureC": 250,
+            "bedTemperatureC": 80,
+            "nozzleDiameterMm": null,
+            "extrusionMultiplier": null,
+            "coolingFanPercent": null,
+            "notes": [
+              "Остальные настройки — по профилю производителя. Подготовка образцов и условия среды указаны не полностью."
+            ]
+          },
+          "measurements": [
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 47,
+              "uncertainty": 2,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 50,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 1500,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 1600,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 66,
+              "uncertainty": 2,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 70,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "VERTICAL_XZ"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Свойства относятся к конкретному продукту и условиям испытаний; их нельзя считать допустимой нагрузкой произвольной детали."
+      ]
+    },
+    {
+      "id": "esun-abs-plus",
+      "family": "ABS",
+      "name": "eSUN ABS+",
+      "manufacturer": "eSUN",
+      "source": {
+        "title": "eSUN ABS+ — Technical Data Sheet",
+        "url": "https://www.esun3d.com/media/esun/catalog/certification/product/ABS/eSUN_ABS_Filament_TDS_V4.0.pdf",
+        "version": "4.0",
+        "publishedOn": "2021-11",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2
+        ],
+        "sha256": "1cbaca91b8240010c80ef7459e770431eede7da13a58529971656180ccc3c88e"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 230,
+          "max": 270
+        },
+        "bedTemperatureC": {
+          "min": 95,
+          "max": 110
+        },
+        "maxPrintSpeedMmS": 100,
+        "coolingFanPercent": {
+          "min": 100,
+          "max": 100
+        },
+        "hardenedNozzleRequired": null
+      },
+      "densityGcm3": 1.06,
+      "densityMethod": "GB/T 1033",
+      "hdtAt045MpaC": null,
+      "hdtAt180MpaC": null,
+      "testSeries": [
+        {
+          "id": "esun-abs-plus-molded",
+          "specimenType": "INJECTION_MOLDED",
+          "specimenDescription": "Литые образцы. В примечании к паспорту указано литьё; данные не являются испытаниями напечатанных деталей.",
+          "conditions": null,
+          "measurements": [
+            {
+              "property": "TENSILE_STRENGTH",
+              "value": 40,
+              "uncertainty": null,
+              "unit": "MPa",
+              "method": "GB/T 1040",
+              "direction": "UNSPECIFIED"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 68,
+              "uncertainty": null,
+              "unit": "MPa",
+              "method": "GB/T 9341",
+              "direction": "UNSPECIFIED"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Паспорт версии 4.0 (ноябрь 2021), а не усреднённые свойства всех ABS.",
+        "Рекомендации печати и механические свойства относятся к разным условиям получения образцов.",
+        "Для HDT указано 73 °C, но нагрузка в этой версии паспорта не указана; значение не внесено в поля HDT с заданной нагрузкой."
+      ]
+    },
+    {
+      "id": "prusament-asa",
+      "family": "ASA",
+      "name": "Prusament ASA",
+      "manufacturer": "Prusa Polymers",
+      "source": {
+        "title": "Prusament ASA — Technical datasheet",
+        "url": "https://storage.googleapis.com/prusa3d-content-prod-14e8-wordpress-prusament-prod/2024/05/bc8551ef-tds_prusament-asa_2024_en.pdf",
+        "version": "1.1",
+        "publishedOn": "2024-05-20",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "sha256": "a8e322580ae1683f398c8a0cfe7c9221747f1b6ec99d2a953e3e48161a959aab"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 250,
+          "max": 270
+        },
+        "bedTemperatureC": {
+          "min": 105,
+          "max": 115
+        },
+        "maxPrintSpeedMmS": 200,
+        "coolingFanPercent": {
+          "min": 0,
+          "max": 50
+        },
+        "hardenedNozzleRequired": null
+      },
+      "densityGcm3": 1.07,
+      "densityMethod": "ISO 1183",
+      "hdtAt045MpaC": 93,
+      "hdtAt180MpaC": 86,
+      "testSeries": [
+        {
+          "id": "prusament-asa-printed",
+          "specimenType": "PRINTED",
+          "specimenDescription": "Стандартные образцы по методам испытаний из паспорта. Точные размеры отдельно не приведены.",
+          "conditions": {
+            "printer": "Original Prusa i3 MK3S",
+            "slicer": "Slic3r Prusa Edition 2.0.0",
+            "layerHeightMm": 0.2,
+            "perimeters": 2,
+            "infillPercent": 100,
+            "infillPattern": "rectilinear",
+            "topLayers": 0,
+            "bottomLayers": 0,
+            "infillPrintSpeedMmS": 200,
+            "nozzleTemperatureC": 265,
+            "bedTemperatureC": 110,
+            "nozzleDiameterMm": null,
+            "extrusionMultiplier": null,
+            "coolingFanPercent": null,
+            "notes": [
+              "Остальные настройки — по профилю производителя. Подготовка образцов и условия среды указаны не полностью."
+            ]
+          },
+          "measurements": [
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 42,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 45,
+              "uncertainty": 2,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 1600,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 1700,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 64,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 69,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "VERTICAL_XZ"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Свойства относятся к конкретному продукту и условиям испытаний; их нельзя считать допустимой нагрузкой произвольной детали."
+      ]
+    },
+    {
+      "id": "prusament-pc-blend",
+      "family": "PC_BLEND",
+      "name": "Prusament PC Blend",
+      "manufacturer": "Prusa Polymers",
+      "source": {
+        "title": "Prusament PC Blend — Technical datasheet",
+        "url": "https://prusament.com/wp-content/uploads/2022/10/PCBlend_Prusament_TDS_2022_16_EN.pdf",
+        "version": "1.1",
+        "publishedOn": "2022-02-16",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "sha256": "25f7aa7b99cc24e5b7d75fbbfd5fa949a3e5689b7201c6b34a9cb588d7c040c7"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 265,
+          "max": 285
+        },
+        "bedTemperatureC": {
+          "min": 100,
+          "max": 120
+        },
+        "maxPrintSpeedMmS": 200,
+        "coolingFanPercent": {
+          "min": 0,
+          "max": 30
+        },
+        "hardenedNozzleRequired": null
+      },
+      "densityGcm3": 1.22,
+      "densityMethod": "Prusa Polymers",
+      "hdtAt045MpaC": 113,
+      "hdtAt180MpaC": 93,
+      "testSeries": [
+        {
+          "id": "prusament-pc-blend-printed",
+          "specimenType": "PRINTED",
+          "specimenDescription": "Стандартные образцы по методам испытаний из паспорта. Точные размеры отдельно не приведены.",
+          "conditions": {
+            "printer": "Original Prusa i3 MK3S",
+            "slicer": "PrusaSlicer 2.1.1",
+            "layerHeightMm": 0.2,
+            "perimeters": 2,
+            "infillPercent": 100,
+            "infillPattern": "rectilinear",
+            "topLayers": 0,
+            "bottomLayers": 0,
+            "infillPrintSpeedMmS": 200,
+            "nozzleTemperatureC": 275,
+            "bedTemperatureC": 115,
+            "nozzleDiameterMm": null,
+            "extrusionMultiplier": 1.034,
+            "coolingFanPercent": 0,
+            "notes": [
+              "Остальные настройки — по профилю производителя. Подготовка образцов и условия среды указаны не полностью."
+            ]
+          },
+          "measurements": [
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 63,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 63,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 1900,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 2000,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 88,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 94,
+              "uncertainty": 2,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "VERTICAL_XZ"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Свойства относятся к конкретному продукту и условиям испытаний; их нельзя считать допустимой нагрузкой произвольной детали."
+      ]
+    },
+    {
+      "id": "prusament-pvb",
+      "family": "PVB",
+      "name": "Prusament PVB",
+      "manufacturer": "Prusa Polymers",
+      "source": {
+        "title": "Prusament PVB — Technical datasheet",
+        "url": "https://prusament.com/wp-content/uploads/2022/10/PVB_Prusament_TDS_2021_10_EN.pdf",
+        "version": "1.1",
+        "publishedOn": "2022-02-16",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "sha256": "35107a38ec9f13051a97d9f47aaf064f85dc1e6242334def8159923c9be9b21b"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 205,
+          "max": 225
+        },
+        "bedTemperatureC": {
+          "min": 70,
+          "max": 80
+        },
+        "maxPrintSpeedMmS": 200,
+        "coolingFanPercent": {
+          "min": 100,
+          "max": 100
+        },
+        "hardenedNozzleRequired": null
+      },
+      "densityGcm3": 1.1,
+      "densityMethod": "Prusa Polymers",
+      "hdtAt045MpaC": 63,
+      "hdtAt180MpaC": 58,
+      "testSeries": [
+        {
+          "id": "prusament-pvb-printed",
+          "specimenType": "PRINTED",
+          "specimenDescription": "Стандартные образцы по методам испытаний из паспорта. Точные размеры отдельно не приведены.",
+          "conditions": {
+            "printer": "Original Prusa i3 MK3S",
+            "slicer": "PrusaSlicer 2.2.0",
+            "layerHeightMm": 0.2,
+            "perimeters": 2,
+            "infillPercent": 100,
+            "infillPattern": "rectilinear",
+            "topLayers": 0,
+            "bottomLayers": 0,
+            "infillPrintSpeedMmS": 200,
+            "nozzleTemperatureC": 215,
+            "bedTemperatureC": 75,
+            "nozzleDiameterMm": null,
+            "extrusionMultiplier": 1.05,
+            "coolingFanPercent": 0,
+            "notes": [
+              "Остальные настройки — по профилю производителя. Подготовка образцов и условия среды указаны не полностью."
+            ]
+          },
+          "measurements": [
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 50,
+              "uncertainty": 5,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 49,
+              "uncertainty": 5,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 1700,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 1700,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 72,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 73,
+              "uncertainty": 3,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "VERTICAL_XZ"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Свойства относятся к конкретному продукту и условиям испытаний; их нельзя считать допустимой нагрузкой произвольной детали.",
+        "Перед испытательной печатью материал сушили 8 часов при 60 °C."
+      ]
+    },
+    {
+      "id": "prusament-pa11-cf",
+      "family": "PA11_CF",
+      "name": "Prusament PA11 Carbon Fiber",
+      "manufacturer": "Prusa Polymers",
+      "source": {
+        "title": "Prusament PA11 Carbon Fiber — Technical datasheet",
+        "url": "https://prusament.com/wp-content/uploads/2022/08/TDS_PA11CFB.pdf",
+        "version": "1.0",
+        "publishedOn": "2022-06-29",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "sha256": "3ae54b9708bec2c2ffd2dc32c9d6d2794093874529069fcb6cd0b295a0228d3c"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 280,
+          "max": 290
+        },
+        "bedTemperatureC": {
+          "min": 100,
+          "max": 120
+        },
+        "maxPrintSpeedMmS": 100,
+        "coolingFanPercent": {
+          "min": 20,
+          "max": 20
+        },
+        "hardenedNozzleRequired": true
+      },
+      "densityGcm3": 1.11,
+      "densityMethod": "ISO 1183",
+      "hdtAt045MpaC": 192,
+      "hdtAt180MpaC": 152,
+      "testSeries": [
+        {
+          "id": "prusament-pa11-cf-printed",
+          "specimenType": "PRINTED",
+          "specimenDescription": "Стандартные образцы по методам испытаний из паспорта. Точные размеры отдельно не приведены.",
+          "conditions": {
+            "printer": "Original Prusa i3 MK3S/S+",
+            "slicer": "Slic3r Prusa Edition 2.4.2",
+            "layerHeightMm": 0.2,
+            "perimeters": 2,
+            "infillPercent": 100,
+            "infillPattern": "rectilinear",
+            "topLayers": 0,
+            "bottomLayers": 0,
+            "infillPrintSpeedMmS": 100,
+            "nozzleTemperatureC": 285,
+            "bedTemperatureC": 110,
+            "nozzleDiameterMm": null,
+            "extrusionMultiplier": null,
+            "coolingFanPercent": null,
+            "notes": [
+              "Остальные настройки — по профилю производителя. Подготовка образцов и условия среды указаны не полностью."
+            ]
+          },
+          "measurements": [
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 42,
+              "uncertainty": 1,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_YIELD_STRENGTH",
+              "value": 49,
+              "uncertainty": 2,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 2500,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "TENSILE_MODULUS",
+              "value": 3300,
+              "uncertainty": 100,
+              "unit": "MPa",
+              "method": "ISO 527-1",
+              "direction": "VERTICAL_XZ"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 63,
+              "uncertainty": 2,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "HORIZONTAL"
+            },
+            {
+              "property": "FLEXURAL_STRENGTH",
+              "value": 103,
+              "uncertainty": 3,
+              "unit": "MPa",
+              "method": "ISO 178",
+              "direction": "VERTICAL_XZ"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Свойства относятся к конкретному продукту и условиям испытаний; их нельзя считать допустимой нагрузкой произвольной детали.",
+        "Производитель требует закалённое сопло."
+      ]
+    },
+    {
+      "id": "prusament-tpu-95a",
+      "family": "TPU_95A",
+      "name": "Prusament TPU 95A",
+      "manufacturer": "Prusa Polymers",
+      "source": {
+        "title": "Prusament TPU 95A — Technical datasheet",
+        "url": "https://storage.googleapis.com/prusa3d-content-prod-14e8-wordpress-prusament-prod/2025/05/80316f6d-tds-prusament_tpu_95a_en-1.pdf",
+        "version": "1.0",
+        "publishedOn": "2025-05-29",
+        "verifiedOn": "2026-10-24",
+        "pages": [
+          1,
+          2,
+          3
+        ],
+        "sha256": "5ac8417379a15f0fb0586793a8103460a1a81f48b08e375a766f9b75d20bde7b"
+      },
+      "printing": {
+        "nozzleTemperatureC": {
+          "min": 220,
+          "max": 240
+        },
+        "bedTemperatureC": {
+          "min": 55,
+          "max": 75
+        },
+        "maxPrintSpeedMmS": 30,
+        "coolingFanPercent": {
+          "min": 30,
+          "max": 50
+        },
+        "hardenedNozzleRequired": null
+      },
+      "densityGcm3": 1.25,
+      "densityMethod": "ISO 1183",
+      "hdtAt045MpaC": null,
+      "hdtAt180MpaC": 78.6,
+      "testSeries": [
+        {
+          "id": "prusament-tpu-95a-printed",
+          "specimenType": "PRINTED",
+          "specimenDescription": "Напечатанные образцы для испытаний по ISO 37; точные размеры отдельно не приведены.",
+          "conditions": {
+            "printer": "Original Prusa i3 MK4S",
+            "slicer": "PrusaSlicer 2.8.1",
+            "layerHeightMm": 0.2,
+            "perimeters": 2,
+            "infillPercent": 100,
+            "infillPattern": "rectilinear",
+            "topLayers": 0,
+            "bottomLayers": 0,
+            "infillPrintSpeedMmS": 36,
+            "nozzleTemperatureC": 220,
+            "bedTemperatureC": 75,
+            "nozzleDiameterMm": 0.4,
+            "extrusionMultiplier": 1.08,
+            "coolingFanPercent": 50,
+            "notes": [
+              "В паспорте условия испытательной печати (36 мм/с) отличаются от общей рекомендации (до 30 мм/с).",
+              "Свойства эластомера нельзя интерпретировать как предел текучести жёсткого пластика. Дополнительные параметры ретракта и нависаний приведены на странице 3 источника."
+            ]
+          },
+          "measurements": [
+            {
+              "property": "TENSILE_STRENGTH",
+              "value": 41.4,
+              "uncertainty": 1.3,
+              "unit": "MPa",
+              "method": "ISO 37",
+              "direction": "HORIZONTAL"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "Плотность 1,25 г/см³ взята из паспорта, а не из сторонних агрегаторов.",
+        "Предел текучести, модуль Юнга и вертикальные испытания в паспорт не внесены: они не указаны."
+      ]
+    }
+  ]
+}
