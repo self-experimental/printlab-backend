@@ -21,7 +21,7 @@ class BambuStudioEngineTest {
         Path program = temp.resolve("slow-slicer"), pid = temp.resolve("pid");
         Files.writeString(program, "#!/bin/sh\necho $$ > '" + pid + "'\nexec sleep 5\n");
         Files.setPosixFilePermissions(program, java.nio.file.attribute.PosixFilePermissions.fromString("rwx------"));
-        var engine = new BambuStudioEngine(mapper, new BambuProfiles(mapper, temp.toString()), program.toString());
+        var engine = new BambuStudioEngine(mapper, new BambuProfiles(mapper, temp.toString()), program.toString(), new SlicingTimeouts(180, 45, 40));
         var catalog = new ru.self.printlab_backend.repository.MaterialCatalogRepository(mapper,
                 new org.springframework.core.io.ClassPathResource("catalog/materials.json"));
         var settings = new SlicingEngine.Settings(15, 2, .2, PrintPlanRequest.SupportMode.AUTO);
@@ -48,7 +48,7 @@ class BambuStudioEngineTest {
         assertThatThrownBy(() -> profiles.load("machine", "../outside")).isInstanceOf(PrintPlanException.class);
     }
     @Test void rejectsMissingOrMismatchedSlicerOutputAndReadsOnlyValidatedStats() throws Exception {
-        var engine = new BambuStudioEngine(mapper, new BambuProfiles(mapper, temp.toString()), "missing");
+        var engine = new BambuStudioEngine(mapper, new BambuProfiles(mapper, temp.toString()), "missing", new SlicingTimeouts(180, 45, 40));
         var settings = new SlicingEngine.Settings(15, 2, .2, PrintPlanRequest.SupportMode.AUTO);
         assertThatThrownBy(() -> engine.readEstimate(temp, settings)).isInstanceOf(PrintPlanException.class);
         String good = """
@@ -65,5 +65,30 @@ class BambuStudioEngineTest {
             Files.writeString(temp.resolve("result.json"), invalid);
             assertThatThrownBy(() -> engine.readEstimate(temp, settings)).isInstanceOf(PrintPlanException.class);
         }
+    }
+
+    @Test
+    @org.junit.jupiter.api.condition.EnabledOnOs({org.junit.jupiter.api.condition.OS.MAC, org.junit.jupiter.api.condition.OS.LINUX})
+    void enforcesTheConfiguredProcessBudgetBeforeTheLongerJobDeadline() throws Exception {
+        for (String kind : new String[] {"machine", "process", "filament"}) Files.createDirectory(temp.resolve(kind));
+        Files.writeString(temp.resolve("machine/Bambu Lab A1 mini 0.4 nozzle.json"), "{}");
+        Files.writeString(temp.resolve("process/0.20mm Standard @BBL A1M.json"), "{}");
+        Files.writeString(temp.resolve("filament/Generic PLA @BBL A1M.json"), "{}");
+        Path program = temp.resolve("slow-slicer"), work = temp.resolve("work"), args = temp.resolve("args");
+        Files.writeString(program, "#!/bin/sh\nprintf '%s\\n' \"$PWD\" > '" + work
+                + "'\nprintf '%s\\n' \"$@\" > '" + args + "'\nexec sleep 8\n");
+        Files.setPosixFilePermissions(program, java.nio.file.attribute.PosixFilePermissions.fromString("rwx------"));
+        var engine = new BambuStudioEngine(mapper, new BambuProfiles(mapper, temp.toString()),
+                program.toString(), new SlicingTimeouts(6, 2, 1));
+        var catalog = new ru.self.printlab_backend.repository.MaterialCatalogRepository(mapper,
+                new org.springframework.core.io.ClassPathResource("catalog/materials.json"));
+        long started = System.nanoTime();
+        assertThatThrownBy(() -> engine.slice(temp.resolve("model.stl"),
+                new SlicingEngine.Settings(15, 2, .2, PrintPlanRequest.SupportMode.AUTO),
+                catalog.catalog().materials().getFirst(), System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(6)))
+                .isInstanceOfSatisfying(PrintPlanException.class, e -> assertThat(e.error()).isEqualTo(PrintPlanException.Error.SLICE_TIMEOUT));
+        assertThat(java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started)).isBetween(1500L, 4000L);
+        assertThat(Files.readString(args)).contains("--mstpp\n1\n");
+        assertThat(Files.exists(Path.of(Files.readString(work).trim()))).isFalse();
     }
 }

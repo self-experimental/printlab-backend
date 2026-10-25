@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import ru.self.printlab_backend.algorithm.OptimizationNotApplicableException;
 import ru.self.printlab_backend.stl.StlParseException;
 import ru.self.printlab_backend.stl.StlUploadError;
@@ -22,6 +24,12 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
+    public ResponseEntity<Map<String, Object>> handleUnknownRoute(Exception e) {
+        return ResponseEntity.status(404).body(body(HttpStatus.NOT_FOUND,
+                "Страница не найдена.", "NOT_FOUND"));
+    }
+
     @ExceptionHandler(ru.self.printlab_backend.slicing.PrintPlanException.class)
     public ResponseEntity<Map<String, Object>> handlePrintPlan(ru.self.printlab_backend.slicing.PrintPlanException e) {
         log.warn("Print plan failed [{}]", e.error(), e.getCause());
