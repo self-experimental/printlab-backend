@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.self.printlab_backend.model.ModelGeometry;
 import ru.self.printlab_backend.model.ResearchModel;
-import ru.self.printlab_backend.stl.BinaryStlParser;
+import ru.self.printlab_backend.stl.StlFileParser;
 import ru.self.printlab_backend.stl.ModelIdentificationService;
 import ru.self.printlab_backend.stl.StlParseException;
+import ru.self.printlab_backend.stl.StlUploadError;
+import ru.self.printlab_backend.stl.StlLimits;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,15 +23,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StlAnalysisService {
 
-    private final BinaryStlParser binaryStlParser;
+    private final StlFileParser stlFileParser;
     private final ModelIdentificationService modelIdentificationService;
 
     public StlAnalysisResult analyze(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            throw new StlParseException("Файл STL не передан или пуст");
+            throw new StlParseException(StlUploadError.EMPTY_FILE);
         }
+        if (file.getSize() > StlLimits.MAX_BYTES) throw new MaxUploadSizeExceededException(StlLimits.MAX_BYTES);
         try (InputStream in = file.getInputStream()) {
-            ModelGeometry geometry = binaryStlParser.parse(in);
+            ModelGeometry geometry = stlFileParser.parse(in);
             Optional<ResearchModel> matched = modelIdentificationService.identify(geometry);
             ResearchModel model = null;
             if (matched.isPresent()) {

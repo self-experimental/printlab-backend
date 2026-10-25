@@ -17,7 +17,7 @@ class ExperimentalOptimizationAlgorithmTest {
     private final ExperimentalOptimizationAlgorithm algorithm = new ExperimentalOptimizationAlgorithm();
 
     private OptimizationRequest createRequest(double reqLoadN, double safety, OptimizationPriority priority) {
-        return new OptimizationRequest("PLA", reqLoadN, safety, 0, 0, 0, 0, null, null, null, priority);
+        return new OptimizationRequest("PLA", reqLoadN, safety, 0, 0, 0, 0, null, null, null, priority, null);
     }
 
     @Test
@@ -75,7 +75,7 @@ class ExperimentalOptimizationAlgorithmTest {
                 .printTimeMin(30).materialConsumptionG(7).build();
 
         // Ищем конкретно слой 0.3
-        OptimizationRequest req = new OptimizationRequest("PLA", 0, 1, 0, 0, 0.3, 3, null, null, null, OptimizationPriority.BALANCED);
+        OptimizationRequest req = new OptimizationRequest("PLA", 0, 1, 0, 0, 0.3, 3, null, null, null, OptimizationPriority.BALANCED, null);
         
         OptimizationResult res = algorithm.select(List.of(layer02, layer03), req);
         assertEquals("l03", res.selectedExperimentId());

@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ModelIdentificationService {
 
-    private static final double TOLERANCE_RATIO = 0.15;
+    private static final double TOLERANCE_RATIO = 0.01;
 
     private final ExperimentRepository experimentRepository;
 
@@ -32,6 +32,7 @@ public class ModelIdentificationService {
             if (m.getGeometry() == null) {
                 continue;
             }
+            if (!withinTolerance(geometry, m.getGeometry())) continue;
             double distance = geometryDistance(geometry, m.getGeometry());
             if (distance < bestDistance) {
                 bestDistance = distance;
@@ -42,10 +43,15 @@ public class ModelIdentificationService {
         if (best == null) {
             return Optional.empty();
         }
-        if (bestDistance >= TOLERANCE_RATIO) {
-            return Optional.empty();
-        }
         return Optional.of(best);
+    }
+
+    private boolean withinTolerance(ModelGeometry a, ModelGeometry b) {
+        return relativeDiff(a.getVolumeMm3(), b.getVolumeMm3()) <= TOLERANCE_RATIO
+                && relativeDiff(a.getSurfaceAreaMm2(), b.getSurfaceAreaMm2()) <= TOLERANCE_RATIO
+                && relativeDiff(a.getBoundingBoxXmm(), b.getBoundingBoxXmm()) <= TOLERANCE_RATIO
+                && relativeDiff(a.getBoundingBoxYmm(), b.getBoundingBoxYmm()) <= TOLERANCE_RATIO
+                && relativeDiff(a.getBoundingBoxZmm(), b.getBoundingBoxZmm()) <= TOLERANCE_RATIO;
     }
 
     private double geometryDistance(ModelGeometry a, ModelGeometry b) {
