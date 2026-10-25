@@ -24,20 +24,28 @@ REPOSITORIES = {c: 'ghcr.io/self-experimental/printlab-' + c
                 for c in ('backend', 'frontend')}
 
 
+class DeploymentRejected(ValueError):
+    """Only fixed, non-sensitive diagnostic messages may reach CI logs."""
+
+
 def validate(component, payload):
     if component not in REPOSITORIES or not isinstance(payload, dict):
-        raise ValueError('Unknown component or invalid payload')
+        raise DeploymentRejected('Unknown component or invalid payload')
     if not re.fullmatch(r'[0-9a-f]{40}', payload.get('revision', '')):
-        raise ValueError('Invalid revision')
+        raise DeploymentRejected('Invalid revision')
     if not re.fullmatch(r'sha256:[0-9a-f]{64}', payload.get('digest', '')):
-        raise ValueError('Invalid digest')
+        raise DeploymentRejected('Invalid digest')
     for name in ('run_number', 'run_attempt'):
         if type(payload.get(name)) is not int or not 0 < payload[name] < 10**12:
-            raise ValueError('Invalid workflow sequence')
+            raise DeploymentRejected('Invalid workflow sequence')
     if not re.fullmatch(r'[A-Za-z0-9_\[\]-]{1,100}', payload.get('registry_user', '')):
-        raise ValueError('Invalid registry user')
-    if not re.fullmatch(r'[A-Za-z0-9_]{20,2048}', payload.get('registry_token', '')):
-        raise ValueError('Invalid registry token')
+        raise DeploymentRejected('Invalid registry user')
+    # GitHub tokens are opaque: stateless GITHUB_TOKEN values include JWT dots
+    # and base64url hyphens. Bound the transport, not the credential format.
+    token = payload.get('registry_token')
+    if (not isinstance(token, str) or not 1 <= len(token) <= 4096
+            or not all(0x21 <= ord(char) <= 0x7e for char in token)):
+        raise DeploymentRejected('Invalid registry token')
     return REPOSITORIES[component] + '@' + payload['digest']
 
 
@@ -99,7 +107,7 @@ def deploy(component, payload):
         previous = json.loads(state_file.read_text()) if state_file.exists() else None
         sequence = (payload['run_number'], payload['run_attempt'])
         if previous and sequence < (previous['run_number'], previous['run_attempt']):
-            raise ValueError('Stale deployment rejected')
+            raise DeploymentRejected('Stale deployment rejected')
         # Login data exists only during this pull, never in /root/.docker/config.json.
         with tempfile.TemporaryDirectory(prefix='printlab-registry-') as directory:
             env = {**os.environ, 'DOCKER_CONFIG': directory}
@@ -109,10 +117,10 @@ def deploy(component, payload):
         revision = run(['/usr/bin/docker', 'image', 'inspect', '--format',
                         '{{ index .Config.Labels "org.opencontainers.image.revision" }}', image])
         if revision != payload['revision']:
-            raise ValueError('Image revision mismatch')
+            raise DeploymentRejected('Image revision mismatch')
         platform = run(['/usr/bin/docker', 'image', 'inspect', '--format', '{{.Os}}/{{.Architecture}}', image])
         if platform != 'linux/amd64':
-            raise ValueError('Wrong image platform')
+            raise DeploymentRejected('Wrong image platform')
         values = read_env()
         key = component.upper() + '_IMAGE'
         old_image = values[key]
@@ -146,18 +154,21 @@ def main():
     for signum in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT, signal.SIGALRM):
         signal.signal(signum, interrupted)
     if len(sys.argv) != 2:
-        raise ValueError('Component required')
+        raise DeploymentRejected('Component required')
     signal.alarm(15)
     raw = sys.stdin.buffer.read(8193)
     signal.alarm(0)
     if len(raw) > 8192:
-        raise ValueError('Payload too large')
+        raise DeploymentRejected('Payload too large')
     deploy(sys.argv[1], json.loads(raw))
 
 
 if __name__ == '__main__':
     try:
         main()
+    except DeploymentRejected as error:
+        print('Deployment rejected: ' + str(error), file=sys.stderr)
+        sys.exit(1)
     except Exception as error:
         print('Deployment rejected or failed: ' + type(error).__name__, file=sys.stderr)
         sys.exit(1)
