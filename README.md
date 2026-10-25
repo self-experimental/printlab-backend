@@ -172,3 +172,5 @@ mvn clean package
 через установленный Bambu Studio для A1 mini с соплом 0,4 мм. Поддержаны PLA, PETG и TPU 95A.
 Один одновременный подбор, кеш одинаковых запросов, ограничение времени и очистка временных файлов.
 Подробности, параметры установки и границы расчёта — [docs/print-plans.md](docs/print-plans.md).
+
+Размещение в Docker Compose и автодеплой из main: [инструкция](docs/container-deployment.md).
