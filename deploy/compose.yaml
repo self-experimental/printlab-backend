@@ -1,0 +1,49 @@
+name: printlab
+services:
+  backend:
+    image: ${BACKEND_IMAGE:?Set BACKEND_IMAGE to an immutable image reference}
+    platform: linux/amd64
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 256
+    mem_limit: 5g
+    cpus: 3
+    stop_grace_period: 210s
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8080}:8080"
+    environment:
+      PRINTLAB_SLICING_JOB_TIMEOUT_SECONDS: "180"
+      PRINTLAB_SLICING_PROCESS_TIMEOUT_SECONDS: "45"
+      PRINTLAB_SLICING_NATIVE_TIMEOUT_SECONDS: "40"
+    volumes:
+      - data:/var/lib/printlab
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=1073741824,mode=1777
+    logging:
+      driver: json-file
+      options: { max-size: 10m, max-file: "3" }
+  frontend:
+    image: ${FRONTEND_IMAGE:?Set FRONTEND_IMAGE to an immutable image reference}
+    platform: linux/amd64
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 64
+    mem_limit: 128m
+    cpus: 0.5
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8081}:8080"
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=16777216,mode=1777
+    logging:
+      driver: json-file
+      options: { max-size: 10m, max-file: "3" }
+volumes:
+  data:
+    external: true
+    name: ${DATA_VOLUME:-printlab-data}

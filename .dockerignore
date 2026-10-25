@@ -1,0 +1,8 @@
+**
+!Dockerfile
+!app.jar
+!deploy/
+!deploy/container-entrypoint.sh
+!data/
+!data/experiments.json
+!data/research-models.json
