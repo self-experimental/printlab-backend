@@ -21,18 +21,22 @@ public class BambuStudioEngine implements SlicingEngine {
     private final JsonMapper mapper;
     private final BambuProfiles profiles;
     private final Path executable;
+    private final SlicingTimeouts timeouts;
 
     public BambuStudioEngine(JsonMapper mapper, BambuProfiles profiles,
-            @Value("${printlab.bambu.executable:/Applications/BambuStudio.app/Contents/MacOS/BambuStudio}") String executable) {
+            @Value("${printlab.bambu.executable:/Applications/BambuStudio.app/Contents/MacOS/BambuStudio}") String executable,
+            SlicingTimeouts timeouts) {
         this.mapper = mapper;
         this.profiles = profiles;
         this.executable = Path.of(executable);
+        this.timeouts = timeouts;
     }
 
     @Override public Estimate slice(Path stl, Settings settings, MaterialProfile material, long deadlineNanos) {
         if (!Files.isExecutable(executable)) throw new PrintPlanException(SLICER_UNAVAILABLE);
         Path directory = null;
         Process process = null;
+        long started = System.nanoTime();
         try {
             directory = Files.createTempDirectory("printlab-slice-");
             var machine = profiles.load("machine", "Bambu Lab A1 mini 0.4 nozzle");
@@ -69,20 +73,29 @@ public class BambuStudioEngine implements SlicingEngine {
             Files.write(machineFile, mapper.writeValueAsBytes(machine));
             Files.write(printFile, mapper.writeValueAsBytes(print));
             Files.write(filamentFile, mapper.writeValueAsBytes(filament));
+            long remainingMillis = Math.min(TimeUnit.SECONDS.toMillis(timeouts.processSeconds()),
+                    TimeUnit.NANOSECONDS.toMillis(deadlineNanos - System.nanoTime()));
+            if (remainingMillis <= 0) throw new PrintPlanException(SLICE_TIMEOUT);
+            long nativeSeconds = Math.min(timeouts.nativeSeconds(), Math.max(1, (remainingMillis - 1000) / 1000));
             List<String> command = List.of(executable.toAbsolutePath().toString(), "--datadir", directory.resolve("config").toString(),
                     "--debug", "2", "--load-settings", machineFile + ";" + printFile, "--load-filaments", filamentFile.toString(),
-                    "--curr-bed-type", "Textured PEI Plate", "--arrange", "1", "--ensure-on-bed", "--slice", "0", "--mstpp", "10",
+                    "--curr-bed-type", "Textured PEI Plate", "--arrange", "1", "--ensure-on-bed", "--slice", "0", "--mstpp", Long.toString(nativeSeconds),
                     "--mtcpp", "100000", "--outputdir", directory.toString(), stl.toAbsolutePath().toString());
-            long remainingMillis = Math.min(14_000, TimeUnit.NANOSECONDS.toMillis(deadlineNanos - System.nanoTime()));
-            if (remainingMillis <= 0) throw new PrintPlanException(SLICE_TIMEOUT);
             process = new ProcessBuilder(command).directory(directory.toFile()).redirectErrorStream(true)
                     .redirectOutput(directory.resolve("slicer.log").toFile()).start();
-            if (!process.waitFor(remainingMillis, TimeUnit.MILLISECONDS)) throw new PrintPlanException(SLICE_TIMEOUT);
+            if (!process.waitFor(remainingMillis, TimeUnit.MILLISECONDS)) {
+                log.warn("Slicer timeout: budgetMs={}, elapsedMs={}, settings={}, diagnostic={}",
+                        remainingMillis, elapsedMillis(started), settings, diagnostic(directory));
+                throw new PrintPlanException(SLICE_TIMEOUT);
+            }
             if (process.exitValue() != 0) {
-                log.warn("Bambu Studio failed, exit {}", process.exitValue());
+                log.warn("Slicer failed: exit={}, elapsedMs={}, settings={}, diagnostic={}",
+                        process.exitValue(), elapsedMillis(started), settings, diagnostic(directory));
                 throw new PrintPlanException(SLICE_FAILED);
             }
-            return readEstimate(directory, settings);
+            var estimate = readEstimate(directory, settings);
+            log.info("Slicer completed: elapsedMs={}, settings={}", elapsedMillis(started), settings);
+            return estimate;
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new PrintPlanException(SLICE_TIMEOUT, e);
@@ -96,6 +109,22 @@ public class BambuStudioEngine implements SlicingEngine {
             }
             deleteTree(directory);
         }
+    }
+
+    private static long elapsedMillis(long started) {
+        return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started);
+    }
+
+    /** Keep only a bounded, single-line diagnostic in server logs, never the response or STL. */
+    private static String diagnostic(Path directory) {
+        try (var channel = java.nio.channels.FileChannel.open(directory.resolve("slicer.log"))) {
+            int length = (int) Math.min(2048, channel.size());
+            var buffer = java.nio.ByteBuffer.allocate(length);
+            channel.position(channel.size() - length);
+            while (buffer.hasRemaining() && channel.read(buffer) > 0) { /* Bounded tail only. */ }
+            return new String(buffer.array(), 0, buffer.position(), java.nio.charset.StandardCharsets.UTF_8)
+                    .replaceAll("\\p{Cntrl}", " ");
+        } catch (IOException e) { return "unavailable"; }
     }
 
     Estimate readEstimate(Path directory, Settings expected) throws IOException {

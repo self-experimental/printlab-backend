@@ -38,7 +38,7 @@ class PrintPlanServiceTest {
     @BeforeEach void setup() {
         engine = new FakeEngine();
         service = new PrintPlanService(new MaterialCatalogRepository(mapper, new ClassPathResource("catalog/materials.json")),
-                new StlFileParser(new BinaryStlParser()), engine, mapper);
+                new StlFileParser(new BinaryStlParser()), engine, mapper, new SlicingTimeouts(180, 45, 40));
     }
     @Test void calculatesUnseenGeometryAndChoosesByActualCandidateMetrics() {
         var part = file(31);
@@ -83,6 +83,39 @@ class PrintPlanServiceTest {
                 .isInstanceOf(PrintPlanException.class);
         engine.calculation = settings -> new SlicingEngine.Estimate(20, 4, "test", false);
         assertThat(service.analyze(file(31), request("prusament-pla", PrintPlanRequest.Priority.MIN_TIME, 0, 0)).candidates()).hasSize(6);
+    }
+    @Test void preservesSuccessfulVariantsWhenOneTimesOutAndCachesThePartialResult() {
+        engine.calculation = settings -> {
+            if (settings.infillPercent() == 15 && settings.perimeters() == 3)
+                throw new PrintPlanException(PrintPlanException.Error.SLICE_TIMEOUT);
+            return new SlicingEngine.Estimate(20, 4, "test", false);
+        };
+        var request = request("prusament-pla", PrintPlanRequest.Priority.BALANCED, 0, 0);
+        var result = service.analyze(file(31), request);
+        assertThat(result.plannedCandidateCount()).isEqualTo(6);
+        assertThat(result.candidates()).hasSize(5).noneMatch(c -> c.id().equals("variant-3"));
+        assertThat(result.candidates()).anyMatch(c -> c.id().equals("variant-6"));
+        assertThat(result.explanation()).contains("не уложившиеся в лимит");
+        assertThat(engine.calls.get()).isEqualTo(6);
+        assertThat(service.analyze(file(31), request)).isSameAs(result);
+        assertThat(engine.calls.get()).isEqualTo(6);
+        assertThat(Files.exists(engine.lastPath)).isFalse();
+    }
+    @Test void doesNotClaimThatNoConfigurationFitsWhenSomeWereNotCalculated() {
+        engine.calculation = settings -> {
+            if (settings.infillPercent() == 35) throw new PrintPlanException(PrintPlanException.Error.SLICE_TIMEOUT);
+            return new SlicingEngine.Estimate(20, 4, "test", false);
+        };
+        assertThatThrownBy(() -> service.analyze(file(31), request("prusament-pla", PrintPlanRequest.Priority.MIN_TIME, 1, 0)))
+                .isInstanceOfSatisfying(PrintPlanException.class, e -> assertThat(e.error()).isEqualTo(PrintPlanException.Error.SLICE_TIMEOUT));
+    }
+    @Test void doesNotHideInvalidSlicerOutputBehindPartialSuccess() {
+        engine.calculation = settings -> {
+            if (settings.infillPercent() == 35) throw new PrintPlanException(PrintPlanException.Error.SLICE_FAILED);
+            return new SlicingEngine.Estimate(20, 4, "test", false);
+        };
+        assertThatThrownBy(() -> service.analyze(file(31), request("prusament-pla", PrintPlanRequest.Priority.MIN_TIME, 0, 0)))
+                .isInstanceOfSatisfying(PrintPlanException.class, e -> assertThat(e.error()).isEqualTo(PrintPlanException.Error.SLICE_FAILED));
     }
     @Test void permitsOnlyOneCalculationAtATimeAndReleasesSlot() throws Exception {
         var entered = new CountDownLatch(1); var release = new CountDownLatch(1);
