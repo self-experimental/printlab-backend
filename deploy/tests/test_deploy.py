@@ -56,6 +56,20 @@ class DeployTest(unittest.TestCase):
         login = next(args for args in self.stack if 'login' in args)
         self.assertNotIn(self.payload['registry_token'], ' '.join(login))
 
+    def test_accepts_legacy_and_stateless_tokens_without_decoding_them(self):
+        # Synthetic credentials; validation must not depend on GitHub internals.
+        for token in ('ghs_' + 'a' * 36,
+                      'ghs_12345_' + 'a' * 200 + '.' + 'b-c_' * 70 + '.' + 'd' * 100):
+            with self.subTest(length=len(token)):
+                self.assertTrue(receiver.validate('backend', {**self.payload, 'registry_token': token})
+                                .endswith(self.payload['digest']))
+
+    def test_rejects_empty_oversized_or_control_character_tokens(self):
+        for token in ('', 'a' * 4097, 'secret\nnext', 'secret\tvalue', 'secret\x00value',
+                      'secret value', 'секрет', None, 123):
+            with self.subTest(token_type=type(token).__name__), self.assertRaises(receiver.DeploymentRejected):
+                receiver.validate('backend', {**self.payload, 'registry_token': token})
+
     def test_failed_smoke_restores_previous_image_without_changing_other_service(self):
         with patch.object(receiver, 'run', side_effect=self.command), \
                 patch.object(receiver, 'check', side_effect=RuntimeError('broken slicer')), \
