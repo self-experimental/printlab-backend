@@ -51,7 +51,12 @@ public class BambuStudioEngine implements SlicingEngine {
             print.put("layer_height", Double.toString(settings.layerHeightMm()));
             print.put("sparse_infill_density", settings.infillPercent() + "%");
             print.put("wall_loops", Integer.toString(settings.perimeters()));
-            print.put("sparse_infill_pattern", settings.infillPercent() == 100 ? "rectilinear" : "gyroid");
+            print.put("sparse_infill_pattern", settings.infillPercent() == 100 ? "rectilinear" : settings.infillPattern().name().toLowerCase(Locale.ROOT));
+            print.put("top_shell_layers", Integer.toString(settings.topLayers()));
+            print.put("bottom_shell_layers", Integer.toString(settings.bottomLayers()));
+            // Do not let an inherited minimum thickness silently override the requested layer counts.
+            print.put("top_shell_thickness", "0");
+            print.put("bottom_shell_thickness", "0");
             print.put("enable_support", settings.supportMode() == PrintPlanRequest.SupportMode.AUTO ? "1" : "0");
             print.put("support_type", "normal(auto)");
             double nozzle = (material.printing().nozzleTemperatureC().min() + material.printing().nozzleTemperatureC().max()) / 2;

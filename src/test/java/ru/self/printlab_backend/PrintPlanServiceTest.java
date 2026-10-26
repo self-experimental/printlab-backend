@@ -38,7 +38,8 @@ class PrintPlanServiceTest {
     @BeforeEach void setup() {
         engine = new FakeEngine();
         service = new PrintPlanService(new MaterialCatalogRepository(mapper, new ClassPathResource("catalog/materials.json")),
-                new StlFileParser(new BinaryStlParser()), engine, mapper, new SlicingTimeouts(180, 45, 40));
+                new StlFileParser(new BinaryStlParser()), engine, mapper, new SlicingTimeouts(180, 45, 40), new ru.self.printlab_backend.recommendation.PrintRecommendations(
+                        description -> ru.self.printlab_backend.recommendation.PartPurpose.general(), new MaterialCatalogRepository(mapper, new ClassPathResource("catalog/materials.json"))));
     }
     @Test void calculatesUnseenGeometryAndChoosesByActualCandidateMetrics() {
         var part = file(31);
@@ -47,7 +48,7 @@ class PrintPlanServiceTest {
         var selected = result.candidates().stream().filter(c -> c.id().equals(result.selectedCandidateId())).findFirst().orElseThrow();
         assertThat(selected.layerHeightMm()).isEqualTo(.16);
         assertThat(selected.estimatedPrintTimeMin()).isEqualTo(18);
-        assertThat(result.warnings()).anyMatch(s -> s.contains("Прочность"));
+        assertThat(result.recommendation().items()).extracting(i -> i.title()).contains("Заполнение", "Стенки", "Материал");
         assertThat(mapper.writeValueAsString(result)).doesNotContain("loadCapacityN", "compressiveStrength");
         assertThat(engine.calls.get()).isEqualTo(6);
     }
