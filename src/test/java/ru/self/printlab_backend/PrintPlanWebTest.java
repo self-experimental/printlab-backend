@@ -19,7 +19,8 @@ class PrintPlanWebTest {
         var mapper = JsonMapper.builder().build();
         SlicingEngine engine = (file, settings, material, deadline) -> new SlicingEngine.Estimate(20, 4, "test", false);
         var service = new PrintPlanService(new MaterialCatalogRepository(mapper, new ClassPathResource("catalog/materials.json")),
-                new StlFileParser(new BinaryStlParser()), engine, mapper, new ru.self.printlab_backend.slicing.SlicingTimeouts(180, 45, 40));
+                new StlFileParser(new BinaryStlParser()), engine, mapper, new ru.self.printlab_backend.slicing.SlicingTimeouts(180, 45, 40), new ru.self.printlab_backend.recommendation.PrintRecommendations(
+                        description -> ru.self.printlab_backend.recommendation.PartPurpose.general(), new MaterialCatalogRepository(mapper, new ClassPathResource("catalog/materials.json"))));
         var mvc = MockMvcBuilders.standaloneSetup(new PrintPlanController(service)).setControllerAdvice(new GlobalExceptionHandler()).build();
         for (String quality : new String[] {"0.2", "0.16", "NaN"}) {
             var request = multipart("/api/print-plans/analyze-stl").file("file", OptimizationIntegrationTest.cube(31))
@@ -34,5 +35,13 @@ class PrintPlanWebTest {
                     .andExpect(jsonPath("$.candidates[0].infillPattern").value("GYROID"));
             else response.andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("INVALID_PRINT_INPUT"));
         }
+        mvc.perform(multipart("/api/print-plans/analyze-stl").file("file", OptimizationIntegrationTest.cube(31))
+                .param("description", "Держатель наушников"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.recommendation.items.length()").value(6))
+                .andExpect(jsonPath("$.materialName").value("Prusament PLA"))
+                .andExpect(jsonPath("$.candidates[0].topLayers").value(4));
+        mvc.perform(multipart("/api/print-plans/analyze-stl").file("file", OptimizationIntegrationTest.cube(31))
+                .param("description", "x".repeat(2001)))
+                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("INVALID_PRINT_INPUT"));
     }
 }

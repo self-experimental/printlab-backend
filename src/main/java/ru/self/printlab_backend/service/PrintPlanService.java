@@ -8,6 +8,7 @@ import ru.self.printlab_backend.dto.printplan.PrintPlanRequest;
 import ru.self.printlab_backend.dto.printplan.PrintPlanResponse;
 import ru.self.printlab_backend.dto.printplan.PrintPlanResponse.Candidate;
 import ru.self.printlab_backend.repository.MaterialCatalogRepository;
+import ru.self.printlab_backend.recommendation.PrintRecommendations;
 import ru.self.printlab_backend.slicing.*;
 import ru.self.printlab_backend.stl.*;
 import tools.jackson.databind.json.JsonMapper;
@@ -31,22 +32,17 @@ public class PrintPlanService {
     private final SlicingEngine engine;
     private final JsonMapper mapper;
     private final SlicingTimeouts timeouts;
+    private final PrintRecommendations recommendations;
     private final Semaphore slot = new Semaphore(1);
     private final LinkedHashMap<String, Cached> cache = new LinkedHashMap<>(32, .75f, true);
     private record Cached(PrintPlanResponse response, long expires) {}
 
-    public PrintPlanResponse analyze(MultipartFile file, PrintPlanRequest request) {
+    public PrintPlanResponse analyze(MultipartFile file, PrintPlanRequest original) {
         if (file == null || file.isEmpty()) throw new StlParseException(StlUploadError.EMPTY_FILE);
         if (file.getSize() > StlLimits.MAX_BYTES) throw new StlParseException(StlUploadError.FILE_TOO_LARGE);
-        if (!List.of(.12, .20, .28).contains(request.layerHeightMm())) throw new PrintPlanException(INVALID_PRINT_INPUT);
-        var material = materials.catalog().materials().stream().filter(m -> m.id().equals(request.materialProfileId()))
-                .findFirst().orElseThrow(() -> new PrintPlanException(MATERIAL_UNSUPPORTED));
-        if (!Set.of("PLA", "PETG", "TPU_95A").contains(material.family()) || Boolean.TRUE.equals(material.printing().hardenedNozzleRequired())
-                || material.printing().bedTemperatureC().min() > 80 || material.printing().nozzleTemperatureC().min() > 300)
-            throw new PrintPlanException(MATERIAL_UNSUPPORTED);
         try {
             byte[] bytes = file.getBytes();
-            String key = key(bytes, request);
+            String key = key(bytes, original);
             PrintPlanResponse hit = cached(key);
             if (hit != null) return hit;
             if (!slot.tryAcquire()) throw new PrintPlanException(SLICER_BUSY);
@@ -64,6 +60,13 @@ public class PrintPlanService {
                         || geometry.getBoundingBoxYmm() <= 0 || geometry.getBoundingBoxZmm() <= 0) throw new PrintPlanException(NO_PRINTABLE_VOLUME);
                 if (geometry.getBoundingBoxXmm() > 180 || geometry.getBoundingBoxYmm() > 180 || geometry.getBoundingBoxZmm() > 180)
                     throw new PrintPlanException(MODEL_DOES_NOT_FIT);
+                var resolved = recommendations.resolve(original);
+                var request = resolved.settings();
+                var material = materials.catalog().materials().stream().filter(m -> m.id().equals(request.materialProfileId()))
+                        .findFirst().orElseThrow(() -> new PrintPlanException(MATERIAL_UNSUPPORTED));
+                if (!Set.of("PLA", "PETG", "TPU_95A").contains(material.family()) || Boolean.TRUE.equals(material.printing().hardenedNozzleRequired())
+                        || material.printing().bedTemperatureC().min() > 80 || material.printing().nozzleTemperatureC().min() > 300)
+                    throw new PrintPlanException(MATERIAL_UNSUPPORTED);
                 directory = Files.createTempDirectory("printlab-plan-");
                 Path stl = directory.resolve("model.stl");
                 Files.write(stl, bytes);
@@ -88,10 +91,11 @@ public class PrintPlanService {
                             || !Double.isFinite(estimate.materialG()) || estimate.materialG() <= 0) throw new PrintPlanException(SLICE_FAILED);
                     version = estimate.version();
                     candidates.add(new Candidate("variant-" + index, settings.infillPercent(), settings.perimeters(), settings.layerHeightMm(),
-                            settings.infillPercent() == 100 ? "RECTILINEAR" : "GYROID",
+                            settings.infillPercent() == 100 ? "RECTILINEAR" : settings.infillPattern().name(),
                             estimate.printTimeMin(), estimate.materialG(),
                             (request.maxPrintTimeMin() == 0 || estimate.printTimeMin() <= request.maxPrintTimeMin())
-                                    && (request.maxMaterialConsumptionG() == 0 || estimate.materialG() <= request.maxMaterialConsumptionG())));
+                                    && (request.maxMaterialConsumptionG() == 0 || estimate.materialG() <= request.maxMaterialConsumptionG()),
+                            settings.topLayers(), settings.bottomLayers(), settings.supportMode()));
                     if (estimate.hasWarnings() && warnings.isEmpty()) warnings.add("Слайсер обнаружил особенности модели. Перед печатью проверьте её в Bambu Studio.");
                 }
                 if (candidates.isEmpty()) throw new PrintPlanException(SLICE_TIMEOUT);
@@ -105,16 +109,12 @@ public class PrintPlanService {
                     case MIN_TIME -> c.estimatedPrintTimeMin();
                     case BALANCED -> c.estimatedPrintTimeMin() / minTime + c.estimatedMaterialG() / minMass;
                 })).orElseThrow();
-                warnings.add("Время и расход — оценка Bambu Studio для A1 mini с соплом 0,4 мм. Использован универсальный профиль материала с плотностью и температурой из выбранного паспорта; точность зависит от калибровки и условий печати.");
-                warnings.add("Прочность и допустимая нагрузка детали в этом режиме не рассчитываются. Вращение в окне просмотра не меняет ориентацию печати из STL.");
                 if (request.supportMode() == PrintPlanRequest.SupportMode.NONE) warnings.add("Поддержки отключены. Нависающие части могут потребовать поддержек.");
                 if (material.family().equals("TPU_95A")) warnings.add("Поддержки из TPU могут быть сложны в удалении. Перед печатью проверьте их расположение.");
+                var advice = recommendations.explain(resolved, original, selected, material);
                 var response = new PrintPlanResponse("Bambu Lab A1 mini", .4, "Текстурированная PEI-пластина", material.name(), version,
                         selected.id(), planned.size(), List.copyOf(candidates), List.copyOf(warnings),
-                        (candidates.size() == 1 ? "Показан единственный успешно рассчитанный вариант. "
-                                : "Выбран лучший из " + candidates.size() + " рассчитанных вариантов по вашему приоритету и ограничениям. ")
-                                + (partial ? "Варианты, не уложившиеся в лимит времени, в сравнении не участвуют. " : "")
-                                + "Расход включает сгенерированные поддержки, а время — подготовку принтера по профилю слайсера.");
+                        advice.summary() + (partial ? " Варианты, не уложившиеся в лимит времени, в сравнении не участвуют." : ""), advice);
                 synchronized (cache) {
                     cache.put(key, new Cached(response, System.nanoTime() + TimeUnit.MINUTES.toNanos(15)));
                     while (cache.size() > 32) cache.remove(cache.keySet().iterator().next());
@@ -149,11 +149,14 @@ public class PrintPlanService {
     static List<SlicingEngine.Settings> configurations(PrintPlanRequest r) {
         double finer = r.layerHeightMm() == .28 ? .20 : r.layerHeightMm() == .20 ? .16 : .08;
         int fill = r.minimumInfillPercent(), walls = r.minimumPerimeters();
-        return List.of(new SlicingEngine.Settings(fill, walls, r.layerHeightMm(), r.supportMode()),
-                new SlicingEngine.Settings(fill, walls, finer, r.supportMode()),
-                new SlicingEngine.Settings(fill, walls + 1, r.layerHeightMm(), r.supportMode()),
-                new SlicingEngine.Settings(fill + 10, walls, r.layerHeightMm(), r.supportMode()),
-                new SlicingEngine.Settings(fill + 10, walls + 1, finer, r.supportMode()),
-                new SlicingEngine.Settings(fill + 20, walls + 1, r.layerHeightMm(), r.supportMode()));
+        return List.of(settings(r, fill, walls, r.layerHeightMm()),
+                settings(r, fill, walls, finer),
+                settings(r, fill, walls + 1, r.layerHeightMm()),
+                settings(r, fill + 10, walls, r.layerHeightMm()),
+                settings(r, fill + 10, walls + 1, finer),
+                settings(r, fill + 20, walls + 1, r.layerHeightMm()));
+    }
+    private static SlicingEngine.Settings settings(PrintPlanRequest r, int fill, int walls, double layer) {
+        return new SlicingEngine.Settings(Math.min(100, fill), walls, layer, r.supportMode(), r.infillPattern(), r.topLayers(), r.bottomLayers());
     }
 }
