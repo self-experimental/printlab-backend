@@ -51,7 +51,13 @@ public class BambuStudioEngine implements SlicingEngine {
             print.put("layer_height", Double.toString(settings.layerHeightMm()));
             print.put("sparse_infill_density", settings.infillPercent() + "%");
             print.put("wall_loops", Integer.toString(settings.perimeters()));
-            print.put("sparse_infill_pattern", settings.infillPercent() == 100 ? "rectilinear" : settings.infillPattern().name().toLowerCase(Locale.ROOT));
+            String pattern = settings.infillPattern().name().toLowerCase(Locale.ROOT);
+            if (settings.infillPercent() == 100 || settings.infillPattern() == PrintPlanRequest.InfillPattern.RECTILINEAR) {
+                // Bambu serializes Rectilinear as zig-zag. An unknown value falls back to cubic,
+                // which the native validator rejects at 100% density.
+                pattern = "zig-zag";
+            }
+            print.put("sparse_infill_pattern", pattern);
             print.put("top_shell_layers", Integer.toString(settings.topLayers()));
             print.put("bottom_shell_layers", Integer.toString(settings.bottomLayers()));
             // Do not let an inherited minimum thickness silently override the requested layer counts.

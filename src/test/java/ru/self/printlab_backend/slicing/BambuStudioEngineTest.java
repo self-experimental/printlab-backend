@@ -76,7 +76,7 @@ class BambuStudioEngineTest {
         Files.writeString(temp.resolve("filament/Generic PLA @BBL A1M.json"), "{}");
         Path program = temp.resolve("slow-slicer"), work = temp.resolve("work"), args = temp.resolve("args");
         Files.writeString(program, "#!/bin/sh\nprintf '%s\\n' \"$PWD\" > '" + work
-                + "'\nprintf '%s\\n' \"$@\" > '" + args + "'\nexec sleep 8\n");
+                + "'\nprintf '%s\\n' \"$@\" > '" + args + "'\ncp process.json '" + temp.resolve("captured-process.json") + "'\nexec sleep 8\n");
         Files.setPosixFilePermissions(program, java.nio.file.attribute.PosixFilePermissions.fromString("rwx------"));
         var engine = new BambuStudioEngine(mapper, new BambuProfiles(mapper, temp.toString()),
                 program.toString(), new SlicingTimeouts(6, 2, 1));
@@ -84,11 +84,15 @@ class BambuStudioEngineTest {
                 new org.springframework.core.io.ClassPathResource("catalog/materials.json"));
         long started = System.nanoTime();
         assertThatThrownBy(() -> engine.slice(temp.resolve("model.stl"),
-                new SlicingEngine.Settings(15, 2, .2, PrintPlanRequest.SupportMode.AUTO),
+                new SlicingEngine.Settings(100, 2, .28, PrintPlanRequest.SupportMode.AUTO),
                 catalog.catalog().materials().getFirst(), System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(6)))
                 .isInstanceOfSatisfying(PrintPlanException.class, e -> assertThat(e.error()).isEqualTo(PrintPlanException.Error.SLICE_TIMEOUT));
         assertThat(java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started)).isBetween(1500L, 4000L);
         assertThat(Files.readString(args)).contains("--mstpp\n1\n");
+        var generated = mapper.readTree(Files.readString(temp.resolve("captured-process.json")));
+        assertThat(generated.path("sparse_infill_pattern").asText()).isEqualTo("zig-zag");
+        assertThat(generated.path("sparse_infill_density").asText()).isEqualTo("100%");
+        assertThat(generated.path("layer_height").asText()).isEqualTo("0.28");
         assertThat(Files.exists(Path.of(Files.readString(work).trim()))).isFalse();
     }
 }
