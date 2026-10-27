@@ -32,6 +32,9 @@ class StlFileParserTest {
 
     @Test
     void supportsBothEncodingsIncludingSolidBinaryHeader() {
+        var degenerate = parser.parse(ASCII.replace("vertex 2", "vertex 0").getBytes(StandardCharsets.UTF_8));
+        assertEquals(1, degenerate.getTriangleCount());
+        assertEquals(0, degenerate.getSurfaceAreaMm2());
         for (byte[] bytes : new byte[][] {ASCII.getBytes(StandardCharsets.UTF_8), binary()}) {
             var geometry = parser.parse(bytes);
             assertEquals(1, geometry.getTriangleCount());
@@ -52,8 +55,7 @@ class StlFileParserTest {
         for (String text : new String[] {"", "broken", "solid x endsolid x", ASCII.replace("endloop", ""),
                 ASCII.replace("vertex 2 0 0", ""), ASCII.replace("endsolid", "missing"),
                 ASCII + " garbage", ASCII.replace("vertex 2", "vertex NaN"),
-                ASCII.replace("vertex 2", "vertex 1e309"), ASCII.replace("vertex 2", "vertex 1e13"),
-                ASCII.replace("vertex 2", "vertex 0")}) {
+                ASCII.replace("vertex 2", "vertex 1e309"), ASCII.replace("vertex 2", "vertex 1e13")}) {
             assertThrows(StlParseException.class, () -> parser.parse(text.getBytes(StandardCharsets.UTF_8)), text);
         }
     }

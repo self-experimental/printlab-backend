@@ -23,9 +23,6 @@ final class StlGeometryAccumulator {
         double bx = p[6] - p[0], by = p[7] - p[1], bz = p[8] - p[2];
         double cx = ay * bz - az * by, cy = az * bx - ax * bz, cz = ax * by - ay * bx;
         double triangleArea = 0.5 * Math.sqrt(cx * cx + cy * cy + cz * cz);
-        if (triangleArea == 0) {
-            throw new StlParseException(StlUploadError.DEGENERATE_FACE);
-        }
         area += triangleArea;
         volume += (p[0] * (p[4] * p[8] - p[5] * p[7])
                 - p[1] * (p[3] * p[8] - p[5] * p[6])

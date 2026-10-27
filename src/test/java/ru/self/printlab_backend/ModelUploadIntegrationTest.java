@@ -136,12 +136,11 @@ class ModelUploadIntegrationTest {
     }
 
     @Test
-    void explainsDamagedFaceAndReturnsStableCode() throws Exception {
+    void acceptsZeroAreaFacesSoTheNativeSlicerCanRepairThem() throws Exception {
         String broken = StlFileParserTest.ASCII.replace("vertex 2 0 0", "vertex 0 0 0");
         mvc.perform(multipart("/api/models").file(new MockMultipartFile("file", "broken.stl",
                         "application/octet-stream", broken.getBytes(StandardCharsets.UTF_8))))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("DEGENERATE_FACE"))
-                .andExpect(jsonPath("$.message").value("В модели есть повреждённая грань: её вершины совпадают или лежат на одной линии. Исправьте модель в 3D-редакторе и экспортируйте STL заново."));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.triangleCount").value(1));
     }
 }
