@@ -1,0 +1,38 @@
+{
+  "use": {
+    "DECORATIVE": "декор|украш|статуэт|фигур|скульптур|сувенир|decorat|ornament|figurine|sculpture",
+    "PROTOTYPE": "макет|муляж|прототип|пример|проверк.*(форм|размер)|prototype|fit test|shape test|mock"
+  },
+  "load": {
+    "HIGH": "огром|больш|высок|тяж|силов|максим.*прочн|очень.*прочн|heavy|high.*load|strong|heavy.duty",
+    "LIGHT": "л[её]г|мал|слаб|небольш|низк|миним|нет|не будет|незнач|light|low|minimal|no.*load|weak|negligible",
+    "NORMAL": "нагруз|усили|груз|force|load|weight|stress"
+  },
+  "loadKind": {
+    "STATIC": "постоян|статич|непрерыв|длительн|constant|static|stationary|sustained",
+    "IMPACT": "удар|падени|падать|урони|брос|стук|impact|shock|drop|hit|fall",
+    "CYCLIC": "повтор|вибрац|циклич|кача|устал|repeated|vibrat|cyclic|fatigue"
+  },
+  "environment": {
+    "HEAT": "нагрев|горяч|температур|°[CcСс]|градус|двигател|жар|heat|hot|temperature|engine",
+    "OUTDOOR": "улиц|улич|наруж|дожд|солн|погод|ультрафиол|outdoor|outside|rain|sun|weather|uv",
+    "INDOOR": "дом|помещен|комнат|indoor|inside|room|home|улиц.*не|не.*улиц|not.*outside"
+  },
+  "flexibility": {
+    "FLEXIBLE": "гиб|гнут|гн[её]т|гнуть|мяг|пружин|эласт|резин|flex|bend|soft|elastic|spring|rubber|stretch",
+    "RIGID": "ж[её]ст|не.*гиб|не.*гн|не.*прогиб|rigid|stiff|not.*flex|not.*bend"
+  },
+  "goal": {
+    "DETAIL": "красив|поверх|мелк|детализ|гладк|эстет|аккурат|матов|глянц|шероховат|ступен|внешн.*вид|surface|smooth|detail|finish|aesthetic|beautiful|look",
+    "FIT": "пример|посад|допуск|размер|точн|зазор|калибр|совпад|fit|toleran|accur|precision|dimens|clearance",
+    "SPEED": "быстр|скор|врем|сроч|чернов|fast|speed|quick|draft|time",
+    "ECONOMY": "эконом|пластик|расход|материал|дешев|д[её]шев|стоим|бюдж|cost|econom|filament|material|cheap"
+  },
+  "genericUseWords": "нужн.*|хоч.*|сдела.*|хорош.*|нормальн.*|штук.*|как.*|что.*|это|мне|нам|деталь|обычн.*|просто|something|thing|make|need|good|a|the|item|part",
+  "goalRecovery": {
+    "DETAIL": "красив|гладк.*поверх|поверх.*гладк|мелк.*детал|детализ|внешн.*вид|fine.*detail|smooth|surface.*finish",
+    "FIT": "пример|посад|точн|допуск|зазор|провер.*размер|fit|toleran|accur|precision",
+    "SPEED": "быстр|сроч|чернов|fast|quick|draft|скорост.*печат",
+    "ECONOMY": "эконом|сбер|минимум.*(пласт|материал)|меньше.*пласт|минимальн.*расход|д[её]шев|подешевле|save.*(material|filament)|minimum.*(material|cost)"
+  }
+}

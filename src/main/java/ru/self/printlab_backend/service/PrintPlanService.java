@@ -115,9 +115,11 @@ public class PrintPlanService {
                 var response = new PrintPlanResponse("Bambu Lab A1 mini", .4, "Текстурированная PEI-пластина", material.name(), version,
                         selected.id(), planned.size(), List.copyOf(candidates), List.copyOf(warnings),
                         advice.summary() + (partial ? " Варианты, не уложившиеся в лимит времени, в сравнении не участвуют." : ""), advice);
-                synchronized (cache) {
-                    cache.put(key, new Cached(response, System.nanoTime() + TimeUnit.MINUTES.toNanos(15)));
-                    while (cache.size() > 32) cache.remove(cache.keySet().iterator().next());
+                if (!"FALLBACK".equals(resolved.purpose().source())) {
+                    synchronized (cache) {
+                        cache.put(key, new Cached(response, System.nanoTime() + TimeUnit.MINUTES.toNanos(15)));
+                        while (cache.size() > 32) cache.remove(cache.keySet().iterator().next());
+                    }
                 }
                 log.info("Print plan completed: id={}, elapsedMs={}, variants={}, planned={}", jobId,
                         TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started), candidates.size(), planned.size());

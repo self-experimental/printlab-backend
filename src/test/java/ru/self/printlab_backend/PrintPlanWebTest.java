@@ -37,7 +37,8 @@ class PrintPlanWebTest {
         }
         mvc.perform(multipart("/api/print-plans/analyze-stl").file("file", OptimizationIntegrationTest.cube(31))
                 .param("description", "Держатель наушников"))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.recommendation.items.length()").value(6))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.recommendation.items[0].title").value("Заполнение"))
+                .andExpect(jsonPath("$.recommendation.summary").value(org.hamcrest.Matchers.containsString("Не удалось уверенно")))
                 .andExpect(jsonPath("$.materialName").value("Prusament PLA"))
                 .andExpect(jsonPath("$.candidates[0].topLayers").value(4));
         mvc.perform(multipart("/api/print-plans/analyze-stl").file("file", OptimizationIntegrationTest.cube(31))

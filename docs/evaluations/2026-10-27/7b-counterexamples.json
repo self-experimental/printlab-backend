@@ -1,0 +1,345 @@
+[
+  {
+    "id": "user-light-board",
+    "expected": {
+      "use": "FUNCTIONAL",
+      "load": "LIGHT",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "UNKNOWN"
+    },
+    "model": "qwen2.5:7b-instruct-q3_K_M",
+    "promptSha256": "ccc9d7681ab37bd5ee34ff0f7b642ae79e755fc719df0dccf4fcd28d6282388c",
+    "raw": {
+      "use": [
+        "FUNCTIONAL",
+        "плата для микросхемы"
+      ],
+      "load": [
+        "UNKNOWN",
+        ""
+      ],
+      "loadKind": [
+        "UNKNOWN",
+        ""
+      ],
+      "environment": [
+        "UNKNOWN",
+        ""
+      ],
+      "flexibility": [
+        "RIGID",
+        "нужно совсем слабо"
+      ],
+      "goal": [
+        "UNKNOWN",
+        ""
+      ]
+    },
+    "actual": {
+      "use": "FUNCTIONAL",
+      "load": "UNKNOWN",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "UNKNOWN"
+    },
+    "pass": false,
+    "seconds": 65.95
+  },
+  {
+    "id": "user-1500n",
+    "expected": {
+      "use": "UNKNOWN",
+      "load": "HIGH",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "UNKNOWN"
+    },
+    "model": "qwen2.5:7b-instruct-q3_K_M",
+    "promptSha256": "ccc9d7681ab37bd5ee34ff0f7b642ae79e755fc719df0dccf4fcd28d6282388c",
+    "raw": {
+      "use": [
+        "UNKNOWN",
+        ""
+      ],
+      "load": [
+        "HIGH",
+        "около 1500 Н"
+      ],
+      "loadKind": [
+        "STATIC",
+        "огромная нагрузка будет"
+      ],
+      "environment": [
+        "UNKNOWN",
+        ""
+      ],
+      "flexibility": [
+        "UNKNOWN",
+        ""
+      ],
+      "goal": [
+        "UNKNOWN",
+        ""
+      ]
+    },
+    "actual": {
+      "use": "UNKNOWN",
+      "load": "HIGH",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "UNKNOWN"
+    },
+    "pass": true,
+    "seconds": 41.6
+  },
+  {
+    "id": "negated-decoration",
+    "expected": {
+      "use": "FUNCTIONAL",
+      "load": "HIGH",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "UNKNOWN"
+    },
+    "model": "qwen2.5:7b-instruct-q3_K_M",
+    "promptSha256": "ccc9d7681ab37bd5ee34ff0f7b642ae79e755fc719df0dccf4fcd28d6282388c",
+    "raw": {
+      "use": [
+        "FUNCTIONAL",
+        "Будет держать тяжёлую полку с книгами"
+      ],
+      "load": [
+        "HIGH",
+        "Будет держать тяжёлую полку с книгами"
+      ],
+      "loadKind": [
+        "STATIC",
+        "Будет держать тяжёлую полку с книгами"
+      ],
+      "environment": [
+        "UNKNOWN",
+        ""
+      ],
+      "flexibility": [
+        "RIGID",
+        "Будет держать тяжёлую полку с книгами"
+      ],
+      "goal": [
+        "UNKNOWN",
+        ""
+      ]
+    },
+    "actual": {
+      "use": "FUNCTIONAL",
+      "load": "HIGH",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "UNKNOWN"
+    },
+    "pass": true,
+    "seconds": 53.16
+  },
+  {
+    "id": "mixed-draft-load",
+    "expected": {
+      "use": "PROTOTYPE",
+      "load": "HIGH",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "SPEED"
+    },
+    "model": "qwen2.5:7b-instruct-q3_K_M",
+    "promptSha256": "ccc9d7681ab37bd5ee34ff0f7b642ae79e755fc719df0dccf4fcd28d6282388c",
+    "raw": {
+      "use": [
+        "PROTOTYPE",
+        "Прототип крепления"
+      ],
+      "load": [
+        "HIGH",
+        "но уже должен держать большой вес"
+      ],
+      "loadKind": [
+        "UNKNOWN",
+        ""
+      ],
+      "environment": [
+        "UNKNOWN",
+        ""
+      ],
+      "flexibility": [
+        "RIGID",
+        "но уже должен держать большой вес"
+      ],
+      "goal": [
+        "SPEED",
+        "Напечатать быстро"
+      ]
+    },
+    "actual": {
+      "use": "PROTOTYPE",
+      "load": "HIGH",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "SPEED"
+    },
+    "pass": true,
+    "seconds": 45.48
+  },
+  {
+    "id": "mixed-beautiful-impact",
+    "expected": {
+      "use": "FUNCTIONAL",
+      "load": "UNKNOWN",
+      "loadKind": "IMPACT",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "DETAIL"
+    },
+    "model": "qwen2.5:7b-instruct-q3_K_M",
+    "promptSha256": "ccc9d7681ab37bd5ee34ff0f7b642ae79e755fc719df0dccf4fcd28d6282388c",
+    "raw": {
+      "use": [
+        "FUNCTIONAL",
+        "Красивый корпус датчика"
+      ],
+      "load": [
+        "UNKNOWN",
+        ""
+      ],
+      "loadKind": [
+        "IMPACT",
+        "важно выдерживать удары и падения"
+      ],
+      "environment": [
+        "UNKNOWN",
+        ""
+      ],
+      "flexibility": [
+        "RIGID",
+        "важно выдерживать удары и падения"
+      ],
+      "goal": [
+        "UNKNOWN",
+        ""
+      ]
+    },
+    "actual": {
+      "use": "FUNCTIONAL",
+      "load": "UNKNOWN",
+      "loadKind": "IMPACT",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "DETAIL"
+    },
+    "pass": true,
+    "seconds": 45.55
+  },
+  {
+    "id": "no-load",
+    "expected": {
+      "use": "FUNCTIONAL",
+      "load": "LIGHT",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "ECONOMY"
+    },
+    "model": "qwen2.5:7b-instruct-q3_K_M",
+    "promptSha256": "ccc9d7681ab37bd5ee34ff0f7b642ae79e755fc719df0dccf4fcd28d6282388c",
+    "raw": {
+      "use": [
+        "FUNCTIONAL",
+        "Подставка для лёгкой платы"
+      ],
+      "load": [
+        "LIGHT",
+        "нагрузок не будет"
+      ],
+      "loadKind": [
+        "UNKNOWN",
+        ""
+      ],
+      "environment": [
+        "UNKNOWN",
+        ""
+      ],
+      "flexibility": [
+        "RIGID",
+        "нагрузок не будет"
+      ],
+      "goal": [
+        "ECONOMY",
+        "сэкономить пластик"
+      ]
+    },
+    "actual": {
+      "use": "FUNCTIONAL",
+      "load": "LIGHT",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "ECONOMY"
+    },
+    "pass": true,
+    "seconds": 44.38
+  },
+  {
+    "id": "fit-prototype",
+    "expected": {
+      "use": "PROTOTYPE",
+      "load": "UNKNOWN",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "FIT"
+    },
+    "model": "qwen2.5:7b-instruct-q3_K_M",
+    "promptSha256": "ccc9d7681ab37bd5ee34ff0f7b642ae79e755fc719df0dccf4fcd28d6282388c",
+    "raw": {
+      "use": [
+        "PROTOTYPE",
+        "Макет корпуса только для примерки размеров перед финальной версией"
+      ],
+      "load": [
+        "UNKNOWN",
+        ""
+      ],
+      "loadKind": [
+        "UNKNOWN",
+        ""
+      ],
+      "environment": [
+        "UNKNOWN",
+        ""
+      ],
+      "flexibility": [
+        "UNKNOWN",
+        ""
+      ],
+      "goal": [
+        "UNKNOWN",
+        ""
+      ]
+    },
+    "actual": {
+      "use": "PROTOTYPE",
+      "load": "UNKNOWN",
+      "loadKind": "UNKNOWN",
+      "environment": "UNKNOWN",
+      "flexibility": "UNKNOWN",
+      "goal": "FIT"
+    },
+    "pass": true,
+    "seconds": 42.23
+  }
+]

@@ -21,7 +21,9 @@ services:
       PRINTLAB_RECOMMENDATIONS_ENABLED: "true"
       PRINTLAB_OLLAMA_URL: "http://ollama:11434"
       PRINTLAB_OLLAMA_MODEL: "qwen3:1.7b"
+      PRINTLAB_REQUIREMENTS_MODEL: "qwen2.5:7b-instruct-q3_K_M"
       PRINTLAB_RECOMMENDATIONS_TIMEOUT_SECONDS: "25"
+      PRINTLAB_REQUIREMENTS_TIMEOUT_SECONDS: "90"
     volumes:
       - data:/var/lib/printlab
     tmpfs:
@@ -55,8 +57,8 @@ services:
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
     pids_limit: 128
-    mem_limit: 2304m
-    cpus: 1.5
+    mem_limit: 4352m
+    cpus: 3
     environment:
       OLLAMA_NUM_PARALLEL: "1"
       OLLAMA_MAX_LOADED_MODELS: "1"

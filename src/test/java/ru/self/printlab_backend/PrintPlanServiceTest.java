@@ -85,6 +85,23 @@ class PrintPlanServiceTest {
         engine.calculation = settings -> new SlicingEngine.Estimate(20, 4, "test", false);
         assertThat(service.analyze(file(31), request("prusament-pla", PrintPlanRequest.Priority.MIN_TIME, 0, 0)).candidates()).hasSize(6);
     }
+    @Test void retriesDescriptionAfterModelRecoveryInsteadOfCachingFallbackForFifteenMinutes() {
+        var calls = new java.util.concurrent.atomic.AtomicInteger();
+        var materials = new MaterialCatalogRepository(mapper, new ClassPathResource("catalog/materials.json"));
+        var recommendations = new ru.self.printlab_backend.recommendation.PrintRecommendations(description ->
+                new ru.self.printlab_backend.recommendation.PartPurpose(
+                        ru.self.printlab_backend.recommendation.PartPurpose.Category.GENERAL,
+                        calls.incrementAndGet() == 1 ? "FALLBACK" : "LOCAL_MODEL"), materials);
+        var service = new PrintPlanService(materials, new StlFileParser(new BinaryStlParser()), engine, mapper,
+                new SlicingTimeouts(180, 45, 40), recommendations);
+        var request = new PrintPlanRequest(null, null, null, null, null, null, null, null, "Деталь", null, null, null);
+        assertThat(service.analyze(file(31), request).recommendation().source()).isEqualTo("FALLBACK");
+        var recovered = service.analyze(file(31), request);
+        assertThat(recovered.recommendation().source()).isEqualTo("LOCAL_MODEL");
+        assertThat(service.analyze(file(31), request)).isSameAs(recovered);
+        assertThat(calls.get()).isEqualTo(2);
+        assertThat(engine.calls.get()).isEqualTo(12);
+    }
     @Test void preservesSuccessfulVariantsWhenOneTimesOutAndCachesThePartialResult() {
         engine.calculation = settings -> {
             if (settings.infillPercent() == 15 && settings.perimeters() == 3)
