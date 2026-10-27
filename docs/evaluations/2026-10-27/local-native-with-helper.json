@@ -1,0 +1,814 @@
+{
+  "date": "2026-10-27",
+  "fixture": "deploy/stepped-block.stl",
+  "environment": "isolated Linux container; 2 CPU / 2 GiB; Bambu Studio 02.08.02.61; no production replacement",
+  "aiHelperEnabled": true,
+  "jarSha256": "5cd244eb9ad4cb07ba4e6e9f2ef69fa6958f631a3c6c911ffa1569a59960135b",
+  "notes": "The final build changes only the UNSPECIFIED load label relative to the rules-only run. With AI enabled, the cold helper did not return a usable topic within the deadline; the standard question was shown. These runs validate application behavior, not structural strength or general language understanding.",
+  "cases": [
+    {
+      "case": "light",
+      "seconds": 1.4,
+      "response": {
+        "printerName": "Bambu Lab A1 mini",
+        "nozzleDiameterMm": 0.4,
+        "bedType": "Текстурированная PEI-пластина",
+        "materialName": "Prusament PLA",
+        "engineVersion": "02.08.02.61",
+        "selectedCandidateId": "variant-1",
+        "plannedCandidateCount": 6,
+        "candidates": [
+          {
+            "id": "variant-1",
+            "infillPercent": 10,
+            "perimeters": 2,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 18.83333536783854,
+            "estimatedMaterialG": 3.3595142364501953,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 3,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-2",
+            "infillPercent": 10,
+            "perimeters": 2,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 21.482027180989583,
+            "estimatedMaterialG": 3.284031629562378,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 3,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-3",
+            "infillPercent": 10,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 18.979158528645833,
+            "estimatedMaterialG": 4.033590316772461,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 3,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-4",
+            "infillPercent": 20,
+            "perimeters": 2,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 19.320794677734376,
+            "estimatedMaterialG": 4.002555847167969,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 3,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-5",
+            "infillPercent": 20,
+            "perimeters": 3,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 22.41615193684896,
+            "estimatedMaterialG": 4.514140605926514,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 3,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-6",
+            "infillPercent": 30,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 20.840464274088543,
+            "estimatedMaterialG": 5.183678150177002,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 3,
+            "supportMode": "AUTO"
+          }
+        ],
+        "warnings": [],
+        "explanation": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати.",
+        "recommendation": {
+          "source": "RULES",
+          "purpose": "Деталь с небольшой нагрузкой",
+          "summary": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати.",
+          "items": [
+            {
+              "title": "Как поняли задачу",
+              "text": "Рабочая деталь; Небольшая нагрузка."
+            },
+            {
+              "title": "Заполнение",
+              "text": "10% · Гироид. При небольшой нагрузке начинаем с умеренного расхода пластика."
+            },
+            {
+              "title": "Стенки",
+              "text": "Стенок: 2. Оболочка закрывает деталь; при лёгком применении достаточно начать с небольшого числа стенок."
+            },
+            {
+              "title": "Высота слоя",
+              "text": "0,2 мм. Баланс качества поверхности и времени печати."
+            },
+            {
+              "title": "Верх и низ",
+              "text": "Верхних слоёв: 4, нижних: 3. Сплошные слои закрывают оболочку. При другой высоте слоя проверьте их суммарную толщину."
+            },
+            {
+              "title": "Материал",
+              "text": "Prusament PLA. PLA выбран для обычной печати без заявленных специальных условий."
+            },
+            {
+              "title": "Поддержки",
+              "text": "Слайсер определяет необходимость поддержек по геометрии модели. Описание детали не меняет её ориентацию печати."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "high",
+      "seconds": 2.11,
+      "response": {
+        "printerName": "Bambu Lab A1 mini",
+        "nozzleDiameterMm": 0.4,
+        "bedType": "Текстурированная PEI-пластина",
+        "materialName": "Prusament PLA",
+        "engineVersion": "02.08.02.61",
+        "selectedCandidateId": "variant-1",
+        "plannedCandidateCount": 6,
+        "candidates": [
+          {
+            "id": "variant-1",
+            "infillPercent": 35,
+            "perimeters": 4,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 21.913787841796875,
+            "estimatedMaterialG": 6.1053290367126465,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-2",
+            "infillPercent": 35,
+            "perimeters": 4,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 24.84201456705729,
+            "estimatedMaterialG": 5.973662376403809,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-3",
+            "infillPercent": 35,
+            "perimeters": 5,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 22.002998860677085,
+            "estimatedMaterialG": 6.491998195648193,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-4",
+            "infillPercent": 45,
+            "perimeters": 4,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 23.389211018880207,
+            "estimatedMaterialG": 6.526857376098633,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-5",
+            "infillPercent": 45,
+            "perimeters": 5,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 26.340616861979168,
+            "estimatedMaterialG": 6.837963581085205,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-6",
+            "infillPercent": 55,
+            "perimeters": 5,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 25.91263427734375,
+            "estimatedMaterialG": 7.235690593719482,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          }
+        ],
+        "warnings": [],
+        "explanation": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати. Допустимая нагрузка этим подбором не подтверждается.",
+        "recommendation": {
+          "source": "RULES",
+          "purpose": "Деталь с повышенными требованиями к жёсткости",
+          "summary": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати. Допустимая нагрузка этим подбором не подтверждается.",
+          "items": [
+            {
+              "title": "Как поняли задачу",
+              "text": "Повышенная нагрузка."
+            },
+            {
+              "title": "Заполнение",
+              "text": "35% · Гироид. Заполнение поддерживает верхние слои и влияет на жёсткость; оно не заменяет расчёт конструкции."
+            },
+            {
+              "title": "Стенки",
+              "text": "Стенок: 4. Для рабочей детали усиливаем оболочку: увеличение числа стенок часто полезнее простого повышения заполнения."
+            },
+            {
+              "title": "Высота слоя",
+              "text": "0,2 мм. Баланс качества поверхности и времени печати."
+            },
+            {
+              "title": "Верх и низ",
+              "text": "Верхних слоёв: 6, нижних: 5. Сплошные слои закрывают оболочку. При другой высоте слоя проверьте их суммарную толщину."
+            },
+            {
+              "title": "Материал",
+              "text": "Prusament PLA. PLA выбран для обычной печати без заявленных специальных условий."
+            },
+            {
+              "title": "Поддержки",
+              "text": "Слайсер определяет необходимость поддержек по геометрии модели. Описание детали не меняет её ориентацию печати."
+            },
+            {
+              "title": "Проверьте перед печатью",
+              "text": "В описании указано: 1500 Н. Это требование пользователя, а не вычисленная несущая способность. Число не преобразуется в процент заполнения. Направление усилия относительно слоёв, места крепления и плечо нагрузки могут изменить результат сильнее настроек заполнения. Проверьте ориентацию и испытайте образец."
+            },
+            {
+              "title": "Условия, которые нужно уточнить",
+              "text": "Где деталь закреплена и куда приложена нагрузка? Нагрузка постоянная, повторяющаяся или ударная?"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "outdoor",
+      "seconds": 1.19,
+      "response": {
+        "printerName": "Bambu Lab A1 mini",
+        "nozzleDiameterMm": 0.4,
+        "bedType": "Текстурированная PEI-пластина",
+        "materialName": "Prusament PETG",
+        "engineVersion": "02.08.02.61",
+        "selectedCandidateId": "variant-1",
+        "plannedCandidateCount": 6,
+        "candidates": [
+          {
+            "id": "variant-1",
+            "infillPercent": 20,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 24.140574137369793,
+            "estimatedMaterialG": 4.672155857086182,
+            "meetsConstraints": true,
+            "topLayers": 5,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-2",
+            "infillPercent": 20,
+            "perimeters": 3,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 27.960477701822917,
+            "estimatedMaterialG": 4.589234352111816,
+            "meetsConstraints": true,
+            "topLayers": 5,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-3",
+            "infillPercent": 20,
+            "perimeters": 4,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 24.29585978190104,
+            "estimatedMaterialG": 5.243687152862549,
+            "meetsConstraints": true,
+            "topLayers": 5,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-4",
+            "infillPercent": 30,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 24.814945475260416,
+            "estimatedMaterialG": 5.2706193923950195,
+            "meetsConstraints": true,
+            "topLayers": 5,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-5",
+            "infillPercent": 30,
+            "perimeters": 4,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 29.005133056640624,
+            "estimatedMaterialG": 5.673111438751221,
+            "meetsConstraints": true,
+            "topLayers": 5,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-6",
+            "infillPercent": 40,
+            "perimeters": 4,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 25.525266520182292,
+            "estimatedMaterialG": 6.150221824645996,
+            "meetsConstraints": true,
+            "topLayers": 5,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          }
+        ],
+        "warnings": [],
+        "explanation": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати.",
+        "recommendation": {
+          "source": "RULES",
+          "purpose": "Деталь для повседневного использования",
+          "summary": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати.",
+          "items": [
+            {
+              "title": "Как поняли задачу",
+              "text": "Рабочая деталь; Уличное применение."
+            },
+            {
+              "title": "Заполнение",
+              "text": "20% · Гироид. Умеренное заполнение поддерживает верхние слои без сплошной заливки детали."
+            },
+            {
+              "title": "Стенки",
+              "text": "Стенок: 3. Оболочка закрывает деталь; при лёгком применении достаточно начать с небольшого числа стенок."
+            },
+            {
+              "title": "Высота слоя",
+              "text": "0,2 мм. Баланс качества поверхности и времени печати."
+            },
+            {
+              "title": "Верх и низ",
+              "text": "Верхних слоёв: 5, нижних: 4. Сплошные слои закрывают оболочку. При другой высоте слоя проверьте их суммарную толщину."
+            },
+            {
+              "title": "Материал",
+              "text": "Prusament PETG. PETG выбран как отправная точка для уличного применения; стойкость зависит от конкретного филамента и условий."
+            },
+            {
+              "title": "Поддержки",
+              "text": "Слайсер определяет необходимость поддержек по геометрии модели. Описание детали не меняет её ориентацию печати."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "impact",
+      "seconds": 1.94,
+      "response": {
+        "printerName": "Bambu Lab A1 mini",
+        "nozzleDiameterMm": 0.4,
+        "bedType": "Текстурированная PEI-пластина",
+        "materialName": "Prusament PLA",
+        "engineVersion": "02.08.02.61",
+        "selectedCandidateId": "variant-1",
+        "plannedCandidateCount": 6,
+        "candidates": [
+          {
+            "id": "variant-1",
+            "infillPercent": 35,
+            "perimeters": 5,
+            "layerHeightMm": 0.12,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 30.527813720703126,
+            "estimatedMaterialG": 6.4666290283203125,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-2",
+            "infillPercent": 35,
+            "perimeters": 5,
+            "layerHeightMm": 0.08,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 41.891377766927086,
+            "estimatedMaterialG": 6.461307048797607,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-3",
+            "infillPercent": 35,
+            "perimeters": 6,
+            "layerHeightMm": 0.12,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 30.500260416666666,
+            "estimatedMaterialG": 6.907408714294434,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-4",
+            "infillPercent": 45,
+            "perimeters": 5,
+            "layerHeightMm": 0.12,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 32.436126708984375,
+            "estimatedMaterialG": 6.823825836181641,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-5",
+            "infillPercent": 45,
+            "perimeters": 6,
+            "layerHeightMm": 0.08,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 44.842769368489584,
+            "estimatedMaterialG": 7.290339469909668,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-6",
+            "infillPercent": 55,
+            "perimeters": 6,
+            "layerHeightMm": 0.12,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 35.03832194010417,
+            "estimatedMaterialG": 7.5470123291015625,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          }
+        ],
+        "warnings": [],
+        "explanation": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати. Допустимая нагрузка этим подбором не подтверждается.",
+        "recommendation": {
+          "source": "RULES",
+          "purpose": "Деталь с повышенными требованиями к жёсткости",
+          "summary": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати. Допустимая нагрузка этим подбором не подтверждается.",
+          "items": [
+            {
+              "title": "Как поняли задачу",
+              "text": "Рабочая деталь; Удары; Важны детали и поверхность."
+            },
+            {
+              "title": "Заполнение",
+              "text": "35% · Гироид. Заполнение поддерживает верхние слои и влияет на жёсткость; оно не заменяет расчёт конструкции."
+            },
+            {
+              "title": "Стенки",
+              "text": "Стенок: 5. Для рабочей детали усиливаем оболочку: увеличение числа стенок часто полезнее простого повышения заполнения."
+            },
+            {
+              "title": "Высота слоя",
+              "text": "0,12 мм. Тонкий слой выбран ради мелких деталей и поверхности."
+            },
+            {
+              "title": "Верх и низ",
+              "text": "Верхних слоёв: 6, нижних: 5. Сплошные слои закрывают оболочку. При другой высоте слоя проверьте их суммарную толщину."
+            },
+            {
+              "title": "Материал",
+              "text": "Prusament PLA. PLA выбран для обычной печати без заявленных специальных условий."
+            },
+            {
+              "title": "Поддержки",
+              "text": "Слайсер определяет необходимость поддержек по геометрии модели. Описание детали не меняет её ориентацию печати."
+            },
+            {
+              "title": "Проверьте перед печатью",
+              "text": "Направление усилия относительно слоёв, места крепления и плечо нагрузки могут изменить результат сильнее настроек заполнения. Проверьте ориентацию и испытайте образец."
+            },
+            {
+              "title": "Условия, которые нужно уточнить",
+              "text": "Где деталь закреплена и куда приложена нагрузка?"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "manual",
+      "seconds": 1.82,
+      "response": {
+        "printerName": "Bambu Lab A1 mini",
+        "nozzleDiameterMm": 0.4,
+        "bedType": "Текстурированная PEI-пластина",
+        "materialName": "Prusament PLA",
+        "engineVersion": "02.08.02.61",
+        "selectedCandidateId": "variant-1",
+        "plannedCandidateCount": 6,
+        "candidates": [
+          {
+            "id": "variant-1",
+            "infillPercent": 10,
+            "perimeters": 2,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 19.171048990885417,
+            "estimatedMaterialG": 3.709559679031372,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-2",
+            "infillPercent": 10,
+            "perimeters": 2,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 21.765802001953126,
+            "estimatedMaterialG": 3.5653669834136963,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-3",
+            "infillPercent": 10,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 19.31330769856771,
+            "estimatedMaterialG": 4.343324184417725,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-4",
+            "infillPercent": 20,
+            "perimeters": 2,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 19.629691569010415,
+            "estimatedMaterialG": 4.317437171936035,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-5",
+            "infillPercent": 20,
+            "perimeters": 3,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 22.652516682942707,
+            "estimatedMaterialG": 4.730374336242676,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-6",
+            "infillPercent": 30,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 21.096498616536458,
+            "estimatedMaterialG": 5.429088115692139,
+            "meetsConstraints": true,
+            "topLayers": 6,
+            "bottomLayers": 5,
+            "supportMode": "AUTO"
+          }
+        ],
+        "warnings": [],
+        "explanation": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати. Допустимая нагрузка этим подбором не подтверждается.",
+        "recommendation": {
+          "source": "RULES",
+          "purpose": "Деталь с повышенными требованиями к жёсткости",
+          "summary": "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати. Допустимая нагрузка этим подбором не подтверждается.",
+          "items": [
+            {
+              "title": "Как поняли задачу",
+              "text": "Повышенная нагрузка."
+            },
+            {
+              "title": "Заполнение",
+              "text": "10% · Гироид. Учтён заданный вами минимум заполнения."
+            },
+            {
+              "title": "Стенки",
+              "text": "Стенок: 2. Учтён заданный вами минимум стенок."
+            },
+            {
+              "title": "Высота слоя",
+              "text": "0,2 мм. Баланс качества поверхности и времени печати."
+            },
+            {
+              "title": "Верх и низ",
+              "text": "Верхних слоёв: 6, нижних: 5. Сплошные слои закрывают оболочку. При другой высоте слоя проверьте их суммарную толщину."
+            },
+            {
+              "title": "Материал",
+              "text": "Prusament PLA. Сохранён ваш выбор материала."
+            },
+            {
+              "title": "Поддержки",
+              "text": "Слайсер определяет необходимость поддержек по геометрии модели. Описание детали не меняет её ориентацию печати."
+            },
+            {
+              "title": "Проверьте перед печатью",
+              "text": "В описании указано: 1500 Н. Это требование пользователя, а не вычисленная несущая способность. Число не преобразуется в процент заполнения. Направление усилия относительно слоёв, места крепления и плечо нагрузки могут изменить результат сильнее настроек заполнения. Проверьте ориентацию и испытайте образец. Ваши ручные ограничения допускают более лёгкий вариант, чем ориентир по описанию (35% и 4 стенки). Ручной выбор сохранён; проверьте это расхождение."
+            },
+            {
+              "title": "Условия, которые нужно уточнить",
+              "text": "Где деталь закреплена и куда приложена нагрузка? Нагрузка постоянная, повторяющаяся или ударная?"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "vague",
+      "seconds": 6.79,
+      "response": {
+        "printerName": "Bambu Lab A1 mini",
+        "nozzleDiameterMm": 0.4,
+        "bedType": "Текстурированная PEI-пластина",
+        "materialName": "Prusament PLA",
+        "engineVersion": "02.08.02.61",
+        "selectedCandidateId": "variant-1",
+        "plannedCandidateCount": 6,
+        "candidates": [
+          {
+            "id": "variant-1",
+            "infillPercent": 15,
+            "perimeters": 2,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 19.082366943359375,
+            "estimatedMaterialG": 3.767498254776001,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-2",
+            "infillPercent": 15,
+            "perimeters": 2,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 21.793485514322917,
+            "estimatedMaterialG": 3.708573341369629,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-3",
+            "infillPercent": 15,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 19.327473958333332,
+            "estimatedMaterialG": 4.389462471008301,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-4",
+            "infillPercent": 25,
+            "perimeters": 2,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 19.95827433268229,
+            "estimatedMaterialG": 4.351375579833984,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-5",
+            "infillPercent": 25,
+            "perimeters": 3,
+            "layerHeightMm": 0.16,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 23.137117513020833,
+            "estimatedMaterialG": 4.882696628570557,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          },
+          {
+            "id": "variant-6",
+            "infillPercent": 35,
+            "perimeters": 3,
+            "layerHeightMm": 0.2,
+            "infillPattern": "GYROID",
+            "estimatedPrintTimeMin": 21.306536865234374,
+            "estimatedMaterialG": 5.434252738952637,
+            "meetsConstraints": true,
+            "topLayers": 4,
+            "bottomLayers": 4,
+            "supportMode": "AUTO"
+          }
+        ],
+        "warnings": [],
+        "explanation": "Не удалось уверенно определить требования. Уточните, что делает деталь, какие усилия и условия ей предстоят; пока показан базовый вариант.",
+        "recommendation": {
+          "source": "RULES",
+          "purpose": "Универсальная печать",
+          "summary": "Не удалось уверенно определить требования. Уточните, что делает деталь, какие усилия и условия ей предстоят; пока показан базовый вариант.",
+          "items": [
+            {
+              "title": "Заполнение",
+              "text": "15% · Гироид. Умеренное заполнение поддерживает верхние слои без сплошной заливки детали."
+            },
+            {
+              "title": "Стенки",
+              "text": "Стенок: 2. Оболочка закрывает деталь; при лёгком применении достаточно начать с небольшого числа стенок."
+            },
+            {
+              "title": "Высота слоя",
+              "text": "0,2 мм. Баланс качества поверхности и времени печати."
+            },
+            {
+              "title": "Верх и низ",
+              "text": "Верхних слоёв: 4, нижних: 4. Сплошные слои закрывают оболочку. При другой высоте слоя проверьте их суммарную толщину."
+            },
+            {
+              "title": "Материал",
+              "text": "Prusament PLA. PLA выбран для обычной печати без заявленных специальных условий."
+            },
+            {
+              "title": "Поддержки",
+              "text": "Слайсер определяет необходимость поддержек по геометрии модели. Описание детали не меняет её ориентацию печати."
+            },
+            {
+              "title": "Условия, которые нужно уточнить",
+              "text": "Для чего нужна деталь и что важнее: жёсткость, внешний вид, точность или скорость?"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

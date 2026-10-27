@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "field": "use",
+      "value": "FUNCTIONAL",
+      "pattern": "\\b(?:плат[ауы]|подстав\\p{L}*|держател\\p{L}*|опор\\p{L}*|кронштейн\\p{L}*|креплен\\p{L}*|корпус\\p{L}*|кожух\\p{L}*|органайзер\\p{L}*|зажим\\p{L}*|втулк\\p{L}*|шестер\\p{L}*|панел\\p{L}*|адаптер\\p{L}*|защитн\\p{L}*\\s+бампер\\p{L}*|ручк\\p{L}*|защ[её]лк\\p{L}*|holder|stand|support|bracket|enclosure|mount|bumper|gear|bushing|adapter|clip)\\b",
+      "literal": false
+    },
+    {
+      "field": "use",
+      "value": "DECORATIVE",
+      "pattern": "\\b(?:статуэт\\p{L}*|фигурк\\p{L}*|скульптур\\p{L}*|декор\\p{L}*|украшен\\p{L}*|сувенир\\p{L}*|figurine|ornament|decorative|sculpture)\\b",
+      "literal": false
+    },
+    {
+      "field": "use",
+      "value": "PROTOTYPE",
+      "pattern": "\\b(?:макет\\p{L}*|прототип\\p{L}*|муляж\\p{L}*|примерк\\p{L}*|проверк\\p{L}*\\s+(?:форм\\p{L}*|размер\\p{L}*)|prototype|mockup|fit\\s+(?:check|test))\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "HIGH",
+      "pattern": "\\b(?:огромн|больш|высок|тяж[её]л|повышенн|значительн|серь[её]зн)\\p{L}*\\s+(?:(?:механическ|рабоч|статическ|постоянн)\\p{L}*\\s+){0,2}(?:нагруз|усил|груз|давлен|вес)\\p{L}*\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "HIGH",
+      "pattern": "\\b(?:держ\\p{L}*|удерж\\p{L}*|выдерж\\p{L}*|подвеш\\p{L}*)\\s+(?:очень\\s+)?тяж[её]л\\p{L}*\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "HIGH",
+      "pattern": "\\b(?:тяж[её]л\\p{L}*\\s+(?:полк|сумк|груз|оборудован|инструмент)\\p{L}*|(?:максимальн|высок|повышенн)\\p{L}*\\s+(?:прочност|ж[её]сткост)\\p{L}*|heavy(?:[- ]duty|\\s+(?:load|weight|bag|shelf))|high\\s+(?:load|strength)|strong(?:\\s+part)?)\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "LIGHT",
+      "pattern": "\\b(?:небольш|мал|низк|минимальн|незначительн|слаб|л[её]гк)\\p{L}*\\s+(?:(?:механическ|рабоч|статическ|постоянн)\\p{L}*\\s+){0,2}(?:нагруз|усил|груз|вес)\\p{L}*\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "LIGHT",
+      "pattern": "\\b(?:нужн\\p{L}*|надо|хочу)\\s+(?:(?:совсем|очень|довольно)\\s+)?слабо\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "LIGHT",
+      "pattern": "\\b(?:усили\\p{L}*\\s+(?:почти|практически|совсем)?\\s*нет|нагруз\\p{L}*\\s+(?:точно\\s+)?не\\s+будет|не\\s+будет\\s+(?:никак\\p{L}*\\s+)?нагруз\\p{L}*|без\\s+(?:особ\\p{L}*\\s+)?нагруз\\p{L}*|no\\s+(?:mechanical\\s+)?load)\\b",
+      "literal": true
+    },
+    {
+      "field": "load",
+      "value": "NORMAL",
+      "pattern": "\\b(?:обычн|средн|умеренн)\\p{L}*\\s+(?:(?:механическ|рабоч|статическ|постоянн)\\p{L}*\\s+){0,2}нагруз\\p{L}*\\b|\\b(?:ordinary|moderate|normal)\\s+(?:working\\s+)?load\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "UNSPECIFIED",
+      "pattern": "\\b(?:нагруз\\p{L}*|усили\\p{L}*|под\\s+груз\\p{L}*|держ\\p{L}*\\s+груз\\p{L}*|нагруж\\p{L}*|load(?:s|[- ]bearing)?|force)\\b",
+      "literal": false
+    },
+    {
+      "field": "loadKind",
+      "value": "STATIC",
+      "pattern": "\\b(?:постоянн|статическ|непрерывн|длительн)\\p{L}*\\s+(?:(?:механическ|статическ|постоянн)\\p{L}*\\s+){0,2}(?:нагруз|усил|давлен)\\p{L}*\\b|\\b(?:constant|static|sustained)\\s+(?:mechanical\\s+)?(?:load|force|pressure)\\b",
+      "literal": false
+    },
+    {
+      "field": "loadKind",
+      "value": "IMPACT",
+      "pattern": "\\b(?:удар\\p{L}*|падени\\p{L}*|ронять|урон\\p{L}*|брос\\p{L}*|impact\\p{L}*|shock\\p{L}*|drops?|falls?|hits?)\\b",
+      "literal": false
+    },
+    {
+      "field": "loadKind",
+      "value": "CYCLIC",
+      "pattern": "\\b(?:вибрац\\p{L}*|повторяющ\\p{L}*\\s+(?:нагруз|усил)\\p{L}*|циклическ\\p{L}*\\s+нагруз\\p{L}*|усталост\\p{L}*|vibrat\\p{L}*|(?:repeated|cyclic)\\s+(?:load|force|stress)\\p{L}*)\\b",
+      "literal": false
+    },
+    {
+      "field": "environment",
+      "value": "INDOOR",
+      "pattern": "\\b(?:для\\s+дома|дома|в\\s+помещени\\p{L}*|в\\s+комнате|домашн\\p{L}*\\s+услови\\p{L}*|indoors?|at\\s+home|room\\s+use)\\b",
+      "literal": false
+    },
+    {
+      "field": "environment",
+      "value": "OUTDOOR",
+      "pattern": "\\b(?:уличн\\p{L}*|(?:на|для|снаружи\\s+на)\\s+улиц\\p{L}*|(?:под\\s+)?дожд\\p{L}*|(?:под|на)\\s+солнц\\p{L}*|outdoors?|outside|rain|sun)\\b",
+      "literal": false
+    },
+    {
+      "field": "environment",
+      "value": "HEAT",
+      "pattern": "\\b(?:нагрев\\p{L}*|горяч\\p{L}*|высок\\p{L}*\\s+температур\\p{L}*|возле\\s+двигател\\p{L}*|heating|heated|hot\\s+(?:environment|part)|near\\s+(?:an?\\s+)?engine)\\b",
+      "literal": false
+    },
+    {
+      "field": "flexibility",
+      "value": "FLEXIBLE",
+      "pattern": "\\b(?:гибк\\p{L}*|гнуться|сгиб\\p{L}*|гн[её]т\\p{L}*|мягк\\p{L}*|пружин\\p{L}*|эластич\\p{L}*|flexible|elastic|soft|bend\\p{L}*|spring\\p{L}*)\\b",
+      "literal": false
+    },
+    {
+      "field": "flexibility",
+      "value": "RIGID",
+      "pattern": "\\b(?:ж[её]стк\\p{L}*|rigid|stiff)\\b",
+      "literal": false
+    },
+    {
+      "field": "flexibility",
+      "value": "RIGID",
+      "pattern": "\\b(?:не\\s+(?:долж\\p{L}*\\s+)?(?:быть\\s+)?(?:гибк\\p{L}*|гнуться|прогиб\\p{L}*)|негибк\\p{L}*|not\\s+flexible|(?:must\\s+)?not\\s+bend)\\b",
+      "literal": true
+    },
+    {
+      "field": "goal",
+      "value": "DETAIL",
+      "pattern": "\\b(?:красив\\p{L}*|мелк\\p{L}*\\s+детал\\p{L}*|гладк\\p{L}*\\s+поверхност\\p{L}*|детализац\\p{L}*|beautiful|smooth|fine\\s+detail\\p{L}*)\\b",
+      "literal": false
+    },
+    {
+      "field": "goal",
+      "value": "FIT",
+      "pattern": "\\b(?:примерк\\p{L}*|посадк\\p{L}*|точн\\p{L}*|допуск\\p{L}*|совпадени\\p{L}*\\s+размер\\p{L}*|проверк\\p{L}*\\s+размер\\p{L}*|проверить\\s+(?:посадк\\p{L}*|размер\\p{L}*)|fit|precision|accurac\\p{L}*|dimensional\\s+fit)\\b",
+      "literal": false
+    },
+    {
+      "field": "goal",
+      "value": "SPEED",
+      "pattern": "\\b(?:быстр\\p{L}*|чернов\\p{L}*|срочн\\p{L}*|fast|quick\\p{L}*|draft)\\b",
+      "literal": false
+    },
+    {
+      "field": "goal",
+      "value": "ECONOMY",
+      "pattern": "\\b(?:сэконом\\p{L}*|эконом\\p{L}*|минимум\\s+(?:пластик\\p{L}*|материал\\p{L}*)|меньше\\s+пластик\\p{L}*|подешевле|д[её]шев\\p{L}*|save\\s+(?:material|filament)|minimum\\s+(?:material|cost))\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "LIGHT",
+      "pattern": "\\b(?:low|light|minimal|negligible|weak)\\s+(?:load|force)\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "HIGH",
+      "pattern": "\\b(?:нагруз|усил|вес)\\p{L}*\\s+(?:(?:будет|предполагается|ожидается|очень|довольно)\\s+){0,2}(?:огромн|больш|высок|тяж[её]л|повышенн|значительн|серь[её]зн)\\p{L}*\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "LIGHT",
+      "pattern": "\\b(?:нагруз|усил|вес)\\p{L}*\\s+(?:(?:будет|предполагается|ожидается|очень|довольно)\\s+){0,2}(?:небольш|мал|низк|минимальн|незначительн|слаб|л[её]гк)\\p{L}*\\b",
+      "literal": false
+    },
+    {
+      "field": "load",
+      "value": "NORMAL",
+      "pattern": "\\b(?:нагруз|усил|вес)\\p{L}*\\s+(?:(?:будет|предполагается|ожидается|очень|довольно)\\s+){0,2}(?:обычн|средн|умеренн)\\p{L}*\\b",
+      "literal": false
+    }
+  ]
+}

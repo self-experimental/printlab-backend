@@ -6,7 +6,7 @@ import java.util.List;
 public record PartRequirements(Fact<Use> use, Fact<Load> load, Fact<LoadKind> loadKind,
         Fact<Environment> environment, Fact<Flexibility> flexibility, Fact<Goal> goal) {
     public enum Use { UNKNOWN, FUNCTIONAL, DECORATIVE, PROTOTYPE }
-    public enum Load { UNKNOWN, LIGHT, NORMAL, HIGH }
+    public enum Load { UNKNOWN, UNSPECIFIED, LIGHT, NORMAL, HIGH }
     public enum LoadKind { UNKNOWN, STATIC, IMPACT, CYCLIC }
     public enum Environment { UNKNOWN, INDOOR, OUTDOOR, HEAT }
     public enum Flexibility { UNKNOWN, FLEXIBLE, RIGID }
@@ -33,7 +33,7 @@ public record PartRequirements(Fact<Use> use, Fact<Load> load, Fact<LoadKind> lo
     }
 
     public boolean mechanical() {
-        return load.value() == Load.HIGH || load.value() == Load.NORMAL || loadKind.value() != LoadKind.UNKNOWN;
+        return load.value() == Load.HIGH || load.value() == Load.NORMAL || load.value() == Load.UNSPECIFIED || loadKind.value() != LoadKind.UNKNOWN;
     }
 
     public List<String> quotes() {

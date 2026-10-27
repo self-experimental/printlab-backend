@@ -75,6 +75,8 @@ public class PrintRecommendations {
             p = new Profile(p.fill, p.walls, .12, p.pattern, p.top, p.bottom);
         else if (r.goal().value() == Goal.SPEED && !r.mechanical() && quantities(description).isEmpty())
             p = new Profile(p.fill, p.walls, .28, p.pattern, p.top, p.bottom);
+        if (!purpose.questions().isEmpty() && r.goal().value() == Goal.UNKNOWN)
+            p = new Profile(p.fill, p.walls, .20, p.pattern, p.top, p.bottom);
         return p;
     }
 
@@ -82,7 +84,7 @@ public class PrintRecommendations {
         return switch (p.requirements().goal().value()) {
             case ECONOMY -> Priority.MIN_MATERIAL;
             case SPEED -> Priority.MIN_TIME;
-            default -> p.category() == PartPurpose.Category.PROTOTYPE ? Priority.MIN_TIME : Priority.BALANCED;
+            default -> p.category() == PartPurpose.Category.PROTOTYPE && p.questions().isEmpty() ? Priority.MIN_TIME : Priority.BALANCED;
         };
     }
 
@@ -120,7 +122,9 @@ public class PrintRecommendations {
         String summary = "Сравнены варианты печати с учётом описанных требований. Время и расход рассчитаны слайсером; параметры служат отправной точкой для пробной печати.";
         if (original.description().isBlank()) summary = "Подобран базовый вариант по вашим настройкам. Добавьте назначение детали, чтобы учесть условия использования.";
         else if ("FALLBACK".equals(purpose.source())) summary = "Не удалось надёжно разобрать описание. Ниже — базовый подбор без подтверждённого понимания назначения; уточните условия использования или задайте параметры вручную.";
+        else if (r.quotes().isEmpty() && hasQuantity) summary = "Учтена указанная нагрузка, но условий недостаточно для оценки конструкции. Ниже — стартовый вариант для уточнения и пробной печати.";
         else if (r.quotes().isEmpty()) summary = "Не удалось уверенно определить требования. Уточните, что делает деталь, какие усилия и условия ей предстоят; пока показан базовый вариант.";
+        if (!purpose.questions().isEmpty()) summary = "Подбор предварительный: часть условий нужно уточнить. Вопросы приведены ниже; время и расход рассчитаны для показанного варианта.";
         if (mechanical) summary += " Допустимая нагрузка этим подбором не подтверждается.";
         if (thermalReview) summary = "Для заявленного нагрева материал требует отдельной проверки. " + summary;
         List<Item> items = new ArrayList<>();
@@ -172,13 +176,13 @@ public class PrintRecommendations {
         if (selected.infillPercent() < suggested.fill || selected.perimeters() < suggested.walls)
             checks.add("Ваши ручные ограничения допускают более лёгкий вариант, чем ориентир по описанию (" + suggested.fill + "% и " + suggested.walls + " стенки). Ручной выбор сохранён; проверьте это расхождение.");
         if (!checks.isEmpty()) items.add(new Item("Проверьте перед печатью", String.join(" ", checks)));
-        List<String> questions = new ArrayList<>();
+        List<String> questions = new ArrayList<>(purpose.questions());
         if (mechanical) questions.add("Где деталь закреплена и куда приложена нагрузка?");
         if (mechanical && r.loadKind().value() == LoadKind.UNKNOWN) questions.add("Нагрузка постоянная, повторяющаяся или ударная?");
         if (r.environment().value() == Environment.HEAT) questions.add(statedTemperature.isPresent()
                 ? "Как долго деталь будет находиться под нагревом и нагрузкой?" : "Каковы максимальная температура и длительность нагрева?");
         if (purpose.category() == PartPurpose.Category.GENERAL && !original.description().isBlank()) questions.add("Для чего нужна деталь и что важнее: жёсткость, внешний вид, точность или скорость?");
-        if (!questions.isEmpty()) items.add(new Item("Условия, которые нужно уточнить", String.join(" ", questions)));
+        if (!questions.isEmpty()) items.add(new Item("Условия, которые нужно уточнить", String.join(" ", questions.stream().distinct().toList())));
         return new PrintPlanResponse.Recommendation(purpose.source(), title, summary, items);
     }
 
@@ -191,7 +195,7 @@ public class PrintRecommendations {
     private static String interpretation(PartRequirements r) {
         List<String> parts = new ArrayList<>();
         describe(parts, r.use(), switch (r.use().value()) { case FUNCTIONAL -> "Рабочая деталь"; case DECORATIVE -> "Декоративное назначение"; case PROTOTYPE -> "Проверка прототипа"; default -> ""; });
-        describe(parts, r.load(), switch (r.load().value()) { case LIGHT -> "Небольшая нагрузка"; case NORMAL -> "Обычная рабочая нагрузка"; case HIGH -> "Повышенная нагрузка"; default -> ""; });
+        describe(parts, r.load(), switch (r.load().value()) { case LIGHT -> "Небольшая нагрузка"; case NORMAL -> "Обычная рабочая нагрузка"; case UNSPECIFIED -> "Нагрузка заявлена"; case HIGH -> "Повышенная нагрузка"; default -> ""; });
         describe(parts, r.loadKind(), switch (r.loadKind().value()) { case STATIC -> "Постоянное усилие"; case IMPACT -> "Удары"; case CYCLIC -> "Повторяющиеся усилия или вибрация"; default -> ""; });
         describe(parts, r.environment(), switch (r.environment().value()) { case INDOOR -> "В помещении"; case OUTDOOR -> "Уличное применение"; case HEAT -> "Нагрев"; default -> ""; });
         describe(parts, r.flexibility(), switch (r.flexibility().value()) { case FLEXIBLE -> "Нужна гибкость"; case RIGID -> "Нужна жёсткость"; default -> ""; });

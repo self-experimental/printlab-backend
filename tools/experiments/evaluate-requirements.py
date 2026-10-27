@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Opt-in, serial semantic evaluation against a self-hosted Ollama (not part of CI).
+"""Historical LLM-first experiment, not the current application or its quality gate.
 
-Uses the production prompt, schema, decoding options and grounded-quote checks.
+Replays the archived experimental prompt, schema and decoding options.
 No CAD, user files, credentials or paid services are involved.
 """
 import argparse
@@ -13,11 +13,11 @@ import statistics
 import time
 import urllib.request
 
-ROOT = Path(__file__).resolve().parents[1]
-PROMPT = (ROOT / "src/main/resources/recommendation/requirements-prompt.txt").read_text()
-QUESTION_TEXT = (ROOT / "src/main/resources/recommendation/requirement-questions.json").read_text()
+ROOT = Path(__file__).resolve().parents[2]
+PROMPT = (ROOT / "tools/experiments/requirements/requirements-prompt.txt").read_text()
+QUESTION_TEXT = (ROOT / "tools/experiments/requirements/requirement-questions.json").read_text()
 QUESTIONS = json.loads(QUESTION_TEXT)
-EVIDENCE = json.loads((ROOT / "src/main/resources/recommendation/requirement-evidence.json").read_text())
+EVIDENCE = json.loads((ROOT / "tools/experiments/requirements/requirement-evidence.json").read_text())
 PROMPT_HASH = hashlib.sha256((PROMPT + "\n" + QUESTION_TEXT).encode()).hexdigest()
 FIELDS = {
     "use": ["UNKNOWN", "FUNCTIONAL", "DECORATIVE", "PROTOTYPE"],
