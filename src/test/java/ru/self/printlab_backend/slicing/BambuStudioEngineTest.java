@@ -88,7 +88,7 @@ class BambuStudioEngineTest {
                 catalog.catalog().materials().getFirst(), System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(6)))
                 .isInstanceOfSatisfying(PrintPlanException.class, e -> assertThat(e.error()).isEqualTo(PrintPlanException.Error.SLICE_TIMEOUT));
         assertThat(java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - started)).isBetween(1500L, 4000L);
-        assertThat(Files.readString(args)).contains("--mstpp\n1\n");
+        assertThat(Files.readString(args)).contains("--mstpp\n1\n").doesNotContain("--mtcpp");
         var generated = mapper.readTree(Files.readString(temp.resolve("captured-process.json")));
         assertThat(generated.path("sparse_infill_pattern").asText()).isEqualTo("zig-zag");
         assertThat(generated.path("sparse_infill_density").asText()).isEqualTo("100%");

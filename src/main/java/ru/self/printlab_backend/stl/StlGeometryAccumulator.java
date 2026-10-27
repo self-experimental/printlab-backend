@@ -11,9 +11,7 @@ final class StlGeometryAccumulator {
     private double area;
 
     void add(double[] p) {
-        if (++count > StlLimits.MAX_TRIANGLES) {
-            throw new StlParseException(StlUploadError.TOO_MANY_TRIANGLES);
-        }
+        count++;
         for (int i = 0; i < p.length; i++) {
             if (!Double.isFinite(p[i]) || Math.abs(p[i]) > StlLimits.MAX_COORDINATE) {
                 throw new StlParseException(StlUploadError.INVALID_COORDINATES);

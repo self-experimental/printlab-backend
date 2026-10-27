@@ -91,7 +91,7 @@ public class BambuStudioEngine implements SlicingEngine {
             List<String> command = List.of(executable.toAbsolutePath().toString(), "--datadir", directory.resolve("config").toString(),
                     "--debug", "2", "--load-settings", machineFile + ";" + printFile, "--load-filaments", filamentFile.toString(),
                     "--curr-bed-type", "Textured PEI Plate", "--arrange", "1", "--ensure-on-bed", "--slice", "0", "--mstpp", Long.toString(nativeSeconds),
-                    "--mtcpp", "100000", "--outputdir", directory.toString(), stl.toAbsolutePath().toString());
+                    "--outputdir", directory.toString(), stl.toAbsolutePath().toString());
             process = new ProcessBuilder(command).directory(directory.toFile()).redirectErrorStream(true)
                     .redirectOutput(directory.resolve("slicer.log").toFile()).start();
             if (!process.waitFor(remainingMillis, TimeUnit.MILLISECONDS)) {

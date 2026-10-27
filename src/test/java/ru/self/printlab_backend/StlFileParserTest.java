@@ -71,13 +71,20 @@ class StlFileParserTest {
     }
 
     @Test
-    void boundsSizeAndTriangleCount() {
+    void boundsFileSizeWithoutASeparateTriangleLimit() {
+        int detailedCount = 225706;
+        byte[] detailed = new byte[84 + detailedCount * 50];
+        ByteBuffer.wrap(detailed).order(ByteOrder.LITTLE_ENDIAN).putInt(80, detailedCount);
+        byte[] triangle = Arrays.copyOfRange(binary(), 84, 134);
+        for (int index = 0; index < detailedCount; index++) {
+            System.arraycopy(triangle, 0, detailed, 84 + index * 50, 50);
+        }
+        assertEquals(detailedCount, parser.parse(detailed).getTriangleCount());
+        byte[] header = new byte[84];
+        ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN).putInt(80, (StlLimits.MAX_BYTES / 50) + 1);
+        assertEquals(ru.self.printlab_backend.stl.StlUploadError.FILE_TOO_LARGE,
+                assertThrows(StlParseException.class, () -> new BinaryStlParser().parse(new java.io.ByteArrayInputStream(header))).error());
         assertThrows(StlParseException.class, () -> parser.parse(new byte[StlLimits.MAX_BYTES + 1]));
-        byte[] invalid = new byte[84 + (StlLimits.MAX_TRIANGLES + 1) * 50];
-        ByteBuffer.wrap(invalid).order(ByteOrder.LITTLE_ENDIAN).putInt(80, StlLimits.MAX_TRIANGLES + 1);
-        assertThrows(StlParseException.class, () -> parser.parse(invalid));
-        String facet = ASCII.substring(ASCII.indexOf("facet"), ASCII.indexOf("\nendsolid"));
-        String tooMany = "solid x " + (facet + " ").repeat(StlLimits.MAX_TRIANGLES + 1) + "endsolid x";
-        assertThrows(StlParseException.class, () -> parser.parse(tooMany.getBytes(StandardCharsets.UTF_8)));
+
     }
 }

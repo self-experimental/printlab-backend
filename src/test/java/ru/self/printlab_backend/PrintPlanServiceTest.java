@@ -80,8 +80,16 @@ class PrintPlanServiceTest {
         assertThat(Files.exists(stl.get())).isFalse();
         assertThat(service.analyze(file(31), request)).isSameAs(first);
         assertThat(engine.calls.get()).isEqualTo(6);
+        var exact = service.analyze(file(31), request, true);
+        assertThat(exact.candidates()).hasSize(1);
+        assertThat(exact.candidates().getFirst().layerHeightMm()).isEqualTo(.2);
+        assertThat(exact.candidates().getFirst().infillPercent()).isEqualTo(15);
+        assertThat(engine.calls.get()).isEqualTo(7);
+        assertThat(service.analyze(file(31), request, true)).isSameAs(exact);
+        assertThat(service.analyze(file(31), request)).isSameAs(first);
+        assertThat(engine.calls.get()).isEqualTo(7);
         service.analyze(file(31), request("prusament-pla", PrintPlanRequest.Priority.BALANCED, 0, 0));
-        assertThat(engine.calls.get()).isEqualTo(12);
+        assertThat(engine.calls.get()).isEqualTo(13);
     }
     @Test void rejectsUnsupportedMaterialsInvalidVolumeAndOversizedPartsBeforeSlicing() {
         assertThatThrownBy(() -> service.analyze(file(20), request("prusament-asa", PrintPlanRequest.Priority.MIN_TIME, 0, 0)))

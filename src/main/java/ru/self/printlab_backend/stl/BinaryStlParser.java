@@ -20,7 +20,7 @@ public class BinaryStlParser implements StlParser {
             input.readFully(new byte[80]);
             long count = Integer.toUnsignedLong(Integer.reverseBytes(input.readInt()));
             if (count == 0) throw new StlParseException(StlUploadError.EMPTY_MODEL);
-            if (count > StlLimits.MAX_TRIANGLES) throw new StlParseException(StlUploadError.TOO_MANY_TRIANGLES);
+            if (84L + count * 50L > StlLimits.MAX_BYTES) throw new StlParseException(StlUploadError.FILE_TOO_LARGE);
             StlGeometryAccumulator geometry = new StlGeometryAccumulator();
             byte[] triangle = new byte[50];
             for (int i = 0; i < count; i++) {

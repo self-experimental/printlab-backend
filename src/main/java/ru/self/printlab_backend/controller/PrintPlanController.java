@@ -18,7 +18,8 @@ public class PrintPlanController {
     private final PrintPlanService service;
     @PostMapping(value = "/analyze-stl", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PrintPlanResponse> analyze(@RequestParam("file") MultipartFile file,
-            @Valid @ModelAttribute PrintPlanRequest request) {
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(service.analyze(file, request));
+            @Valid @ModelAttribute PrintPlanRequest request,
+            @RequestHeader(value = "X-PrintLab-Requested-Only", defaultValue = "false") boolean requestedOnly) {
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(service.analyze(file, request, requestedOnly));
     }
 }

@@ -36,6 +36,13 @@ class PrintPlanWebTest {
             else response.andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("INVALID_PRINT_INPUT"));
         }
         mvc.perform(multipart("/api/print-plans/analyze-stl").file("file", OptimizationIntegrationTest.cube(31))
+                .header("X-PrintLab-Requested-Only", "true")
+                .param("layerHeightMm", "0.27").param("minimumInfillPercent", "55"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.candidates.length()").value(1))
+                .andExpect(jsonPath("$.plannedCandidateCount").value(1))
+                .andExpect(jsonPath("$.candidates[0].layerHeightMm").value(.27))
+                .andExpect(jsonPath("$.candidates[0].infillPercent").value(55));
+        mvc.perform(multipart("/api/print-plans/analyze-stl").file("file", OptimizationIntegrationTest.cube(31))
                 .param("description", "Держатель наушников"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.recommendation.items.length()").value(6))
                 .andExpect(jsonPath("$.materialName").value("Prusament PLA"))

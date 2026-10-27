@@ -38,11 +38,15 @@ public class PrintPlanService {
     private record Cached(PrintPlanResponse response, long expires) {}
 
     public PrintPlanResponse analyze(MultipartFile file, PrintPlanRequest original) {
+        return analyze(file, original, false);
+    }
+
+    public PrintPlanResponse analyze(MultipartFile file, PrintPlanRequest original, boolean requestedOnly) {
         if (file == null || file.isEmpty()) throw new StlParseException(StlUploadError.EMPTY_FILE);
         if (file.getSize() > StlLimits.MAX_BYTES) throw new StlParseException(StlUploadError.FILE_TOO_LARGE);
         try {
             byte[] bytes = file.getBytes();
-            String key = key(bytes, original);
+            String key = key(bytes, original, requestedOnly);
             PrintPlanResponse hit = cached(key);
             if (hit != null) return hit;
             if (!slot.tryAcquire()) throw new PrintPlanException(SLICER_BUSY);
@@ -75,7 +79,12 @@ public class PrintPlanService {
                 List<String> warnings = new ArrayList<>();
                 String version = "";
                 int index = 0;
-                var planned = configurations(request);
+                List<SlicingEngine.Settings> planned;
+                if (requestedOnly) {
+                    planned = List.of(settings(request, request.minimumInfillPercent(), request.minimumPerimeters(), request.layerHeightMm()));
+                } else {
+                    planned = configurations(request);
+                }
                 for (var settings : planned) {
                     if (System.nanoTime() >= deadline) break;
                     index++;
@@ -138,11 +147,12 @@ public class PrintPlanService {
             return value.response();
         }
     }
-    private String key(byte[] bytes, PrintPlanRequest request) {
+    private String key(byte[] bytes, PrintPlanRequest request, boolean requestedOnly) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             digest.update(bytes);
             digest.update(mapper.writeValueAsBytes(request));
+            digest.update(Boolean.toString(requestedOnly).getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return HexFormat.of().formatHex(digest.digest());
         } catch (NoSuchAlgorithmException e) { throw new IllegalStateException(e); }
     }
