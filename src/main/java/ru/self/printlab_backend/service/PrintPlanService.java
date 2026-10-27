@@ -146,15 +146,30 @@ public class PrintPlanService {
             return HexFormat.of().formatHex(digest.digest());
         } catch (NoSuchAlgorithmException e) { throw new IllegalStateException(e); }
     }
-    static List<SlicingEngine.Settings> configurations(PrintPlanRequest r) {
-        double finer = r.layerHeightMm() == .28 ? .20 : r.layerHeightMm() == .20 ? .16 : .08;
-        int fill = r.minimumInfillPercent(), walls = r.minimumPerimeters();
-        return List.of(settings(r, fill, walls, r.layerHeightMm()),
-                settings(r, fill, walls, finer),
-                settings(r, fill, walls + 1, r.layerHeightMm()),
-                settings(r, fill + 10, walls, r.layerHeightMm()),
-                settings(r, fill + 10, walls + 1, finer),
-                settings(r, fill + 20, walls + 1, r.layerHeightMm()));
+    static List<SlicingEngine.Settings> configurations(PrintPlanRequest request) {
+        double layer = request.layerHeightMm();
+        double finer = Math.max(.08, Math.round((layer - .04) * 100) / 100.0);
+        if (layer == .28) {
+            finer = .20;
+        }
+        int fill = request.minimumInfillPercent();
+        int walls = request.minimumPerimeters();
+        int denser = Math.min(100, fill + 10);
+        int densest = Math.min(100, fill + 20);
+        List<SlicingEngine.Settings> planned = List.of(
+                settings(request, fill, walls, layer),
+                settings(request, fill, walls, finer),
+                settings(request, fill, walls + 1, layer),
+                settings(request, denser, walls, layer),
+                settings(request, denser, walls + 1, finer),
+                settings(request, densest, walls + 1, layer));
+        List<SlicingEngine.Settings> unique = new ArrayList<>();
+        for (SlicingEngine.Settings candidate : planned) {
+            if (!unique.contains(candidate)) {
+                unique.add(candidate);
+            }
+        }
+        return List.copyOf(unique);
     }
     private static SlicingEngine.Settings settings(PrintPlanRequest r, int fill, int walls, double layer) {
         return new SlicingEngine.Settings(Math.min(100, fill), walls, layer, r.supportMode(), r.infillPattern(), r.topLayers(), r.bottomLayers());

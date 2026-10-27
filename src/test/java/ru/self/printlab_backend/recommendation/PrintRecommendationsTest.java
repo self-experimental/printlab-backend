@@ -41,7 +41,7 @@ class PrintRecommendationsTest {
         var advisor = new PrintRecommendations(description -> { throw new AssertionError("Do not classify invalid input"); }, materials);
         assertThatThrownBy(() -> advisor.resolve(automatic("x".repeat(2001)))).isInstanceOf(PrintPlanException.class);
         assertThatThrownBy(() -> advisor.resolve(automatic("bad\u0000text"))).isInstanceOf(PrintPlanException.class);
-        assertThatThrownBy(() -> advisor.resolve(new PrintPlanRequest(null, null, .18, null, null, null, null, null, "", null, null, null))).isInstanceOf(PrintPlanException.class);
+        assertThatThrownBy(() -> advisor.resolve(new PrintPlanRequest(null, null, .07, null, null, null, null, null, "", null, null, null))).isInstanceOf(PrintPlanException.class);
         assertThatThrownBy(() -> advisor.resolve(new PrintPlanRequest(null, null, null, 81, null, null, Double.NaN, null, "", null, null, null))).isInstanceOf(PrintPlanException.class);
     }
 }

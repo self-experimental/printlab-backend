@@ -112,8 +112,8 @@ public class PrintRecommendations {
 
     private static void validate(PrintPlanRequest r) {
         if (r.description().length() > 2000 || r.description().codePoints().anyMatch(c -> Character.isISOControl(c) && c != '\n' && c != '\r' && c != '\t')
-                || r.layerHeightMm() != null && !List.of(.12, .20, .28).contains(r.layerHeightMm())
-                || r.minimumInfillPercent() != null && (r.minimumInfillPercent() < 5 || r.minimumInfillPercent() > 80)
+                || r.layerHeightMm() != null && (!Double.isFinite(r.layerHeightMm()) || r.layerHeightMm() < .08 || r.layerHeightMm() > .28)
+                || r.minimumInfillPercent() != null && (r.minimumInfillPercent() < 1 || r.minimumInfillPercent() > 100)
                 || r.minimumPerimeters() != null && (r.minimumPerimeters() < 2 || r.minimumPerimeters() > 6)
                 || r.topLayers() != null && (r.topLayers() < 3 || r.topLayers() > 8)
                 || r.bottomLayers() != null && (r.bottomLayers() < 3 || r.bottomLayers() > 8)

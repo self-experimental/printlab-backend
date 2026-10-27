@@ -5,8 +5,8 @@ import jakarta.validation.constraints.*;
 public record PrintPlanRequest(
         @Pattern(regexp = "[a-z0-9-]{1,100}") String materialProfileId,
         Priority priority,
-        @DecimalMin("0.12") @DecimalMax("0.28") Double layerHeightMm,
-        @Min(5) @Max(80) Integer minimumInfillPercent,
+        @DecimalMin("0.08") @DecimalMax("0.28") Double layerHeightMm,
+        @Min(1) @Max(100) Integer minimumInfillPercent,
         @Min(2) @Max(6) Integer minimumPerimeters,
         SupportMode supportMode,
         @PositiveOrZero @DecimalMax("1000000") Double maxPrintTimeMin,

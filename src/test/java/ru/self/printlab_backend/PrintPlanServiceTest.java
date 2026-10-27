@@ -51,6 +51,23 @@ class PrintPlanServiceTest {
         assertThat(result.recommendation().items()).extracting(i -> i.title()).contains("Заполнение", "Стенки", "Материал");
         assertThat(mapper.writeValueAsString(result)).doesNotContain("loadCapacityN", "compressiveStrength");
         assertThat(engine.calls.get()).isEqualTo(6);
+        for (int fill : new int[] {1, 5, 95, 100}) {
+            for (double layer : new double[] {.08, .16, .24, .28}) {
+                var custom = new PrintPlanRequest("prusament-pla", PrintPlanRequest.Priority.MIN_TIME,
+                        layer, fill, 2, PrintPlanRequest.SupportMode.AUTO, 0, 0);
+                var candidates = service.analyze(part, custom).candidates();
+                assertThat(candidates).doesNotHaveDuplicates();
+                boolean requested = false;
+                for (var candidate : candidates) {
+                    assertThat(candidate.infillPercent()).isBetween(1, 100);
+                    assertThat(candidate.layerHeightMm()).isBetween(.08, .28);
+                    if (candidate.infillPercent() == fill && candidate.layerHeightMm() == layer && candidate.perimeters() == 2) {
+                        requested = true;
+                    }
+                }
+                assertThat(requested).isTrue();
+            }
+        }
     }
     @Test void cachesExactRequestsButRecalculatesChangedParametersAndDeletesFiles() {
         AtomicReference<Path> stl = new AtomicReference<>();
